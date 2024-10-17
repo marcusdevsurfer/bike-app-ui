@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import { Text, StyleSheet, Pressable, TextInput, View } from "react-native"
+import { useNavigation } from '@react-navigation/native';
 
 export const BikesActions = () => {
+    const navigation = useNavigation()
     const [text, setText] = useState('')
 
     useEffect(() => {
@@ -16,8 +18,8 @@ export const BikesActions = () => {
                 value={text}
                 placeholder={"Buscar"}
             />
-            <Pressable style={styles.button}>
-                <Text style={styles.text}>Agregar</Text>
+            <Pressable onPress={() => navigation.navigate('AddBikeForm')} style={styles.button}>
+                <Text style={styles.text}>Agregar nuevo</Text>
             </Pressable>
         </View>
     )
@@ -39,9 +41,9 @@ const styles = StyleSheet.create({
         borderRadius: '4px'
     },
     button: {
-        padding: 8,
+        padding: 10,
         backgroundColor: 'black',
-        borderRadius: '4px'
+        borderRadius: '6px'
     },
     text: {
         color: 'white'
