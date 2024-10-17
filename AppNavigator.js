@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BikesView } from './components/BikesView';
 import { Home } from './components/Home';
 import { BikesAppointmentsView } from './components/BikesAppointmentsView';
+import { AddBikeForm } from './components/AddBikeFom';
 
 const Stack = createNativeStackNavigator();
 export const AppNavigator = () => {
@@ -22,16 +23,14 @@ export const AppNavigator = () => {
                 <Stack.Screen name="BikesAppointmentsView" options={{
                     title: '',
                 }} component={BikesAppointmentsView} />
+
+                <Stack.Screen name="AddBikeForm" options={{
+                    title: '',
+                }} component={AddBikeForm} />
             </Stack.Navigator>
         </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    text: {
-        backgroundColor: 'white'
-    },
-});
 
 
 
