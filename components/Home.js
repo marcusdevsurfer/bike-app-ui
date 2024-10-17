@@ -1,5 +1,8 @@
 import { Text, SafeAreaView, Pressable, StyleSheet } from "react-native"
-export const Home = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+
+export const Home = () => {
+    const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
             <Pressable style={styles.button} onPress={() => navigation.navigate('BikesView')}>
