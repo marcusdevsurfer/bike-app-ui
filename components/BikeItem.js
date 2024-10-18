@@ -1,4 +1,6 @@
+import React from "react";
 import { StyleSheet, View, Text } from "react-native"
+import PropTypes from 'prop-types';
 
 export const BikeItem = ({ bike }) => {
     return (
@@ -15,6 +17,18 @@ export const BikeItem = ({ bike }) => {
         </View>
     )
 }
+
+BikeItem.propTypes = {
+    bike: PropTypes.shape({
+        serialNumber: PropTypes.string,
+        status: PropTypes.string,
+        model: PropTypes.string,
+        station: PropTypes.shape({
+            name: PropTypes.string
+        })
+    })
+};
+
 const styles = StyleSheet.create({
     bikeItemContainer: {
         padding: 10,
