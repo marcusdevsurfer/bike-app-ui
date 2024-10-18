@@ -47,7 +47,7 @@ export const AppNavigator = () => {
                 <Stack.Screen
                     name={SCREEN_NAMES.ADD_BIKE_FORM}
                     options={{
-                        title: 'Nueva Bicicleta',
+                        title: '',
                     }}
                     component={AddBikeForm}
                 />
