@@ -13,16 +13,13 @@ export const BikesView = () => {
             <View style={styles.actionsContainer}>
                 <BikesActions />
             </View>
-            <View style={styles.tableContainer}>
-                <BikesTable />
-            </View>
+            <BikesTable />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
@@ -33,14 +30,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
     },
+
     titleContainer: {
         width: '95%',
-        paddingTop: 20,
-        paddingBottom: 20,
         marginBottom: 5,
-        margin: 'auto',
+        padding: 15,
         alignItems: Platform.OS == 'ios' && 'center'
     },
+
     actionsContainer: {
         width: '95%',
         margin: 'auto',
@@ -51,17 +48,5 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-    },
-    tableContainer: {
-        width: '95%',
-        margin: 'auto',
-        padding: 10,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
+    }
 });
