@@ -1,11 +1,11 @@
 import React from "react";
 import { BikesTable } from "./BikesTable";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { BikesActions } from "./BikesActions";
 
 export const BikesView = () => {
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <View contentContainerStyle={styles.container}>
             <Text style={styles.title}>Registro de Bicicletas</Text>
             <View style={styles.actionsContainer}>
                 <BikesActions />
@@ -13,7 +13,7 @@ export const BikesView = () => {
             <View style={styles.tableContainer}>
                 <BikesTable />
             </View>
-        </ScrollView>
+        </View>
     );
 };
 
