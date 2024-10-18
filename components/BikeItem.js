@@ -1,22 +1,23 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native"
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 export const BikeItem = ({ bike }) => {
     return (
         <View style={styles.bikeItemContainer}>
-            <View style={styles.bikeItemInformationContainer} >
-                <Text style={styles?.bikeItemTitle}>{`SN: ${bike?.serialNumber}`}</Text>
-                <Text>{`Estado: ${bike?.status}`}</Text>
-                <Text>{`Modelo: ${bike?.model}`}</Text>
+            <View style={styles.bikeItemInformationContainer}>
+                <Text style={styles.label}>Estado:</Text>
+                <Text style={styles.value}>{bike?.status}</Text>
+                <Text style={styles.label}>Modelo:</Text>
+                <Text style={styles.value}>{bike?.model}</Text>
             </View>
             <View style={styles.bikeItemLocationContainer}>
-                <Text>Estacion</Text>
-                <Text>{bike?.station.name}</Text>
+                <Text style={styles.label}>Estación:</Text>
+                <Text style={styles.value}>{bike?.station.name}</Text>
             </View>
         </View>
-    )
-}
+    );
+};
 
 BikeItem.propTypes = {
     bike: PropTypes.shape({
@@ -31,28 +32,38 @@ BikeItem.propTypes = {
 
 const styles = StyleSheet.create({
     bikeItemContainer: {
-        padding: 10,
+        padding: 15,
         margin: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: '4px',
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        borderColor: 'gray',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
     },
     bikeItemInformationContainer: {
-        display: "flex",
-        alignContent: 'center'
+        flex: 1,
+        marginRight: 10,
     },
-
     bikeItemLocationContainer: {
-        display: "flex",
-        alignContent: 'center',
-        justifyContent: 'center'
+        flex: 1,
+        alignItems: 'flex-end',
     },
-
-    bikeItemTitle: {
-        fontSize: 18,
-    }
+    label: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    value: {
+        fontSize: 14,
+        color: '#555',
+        marginBottom: 5,
+    },
 });
