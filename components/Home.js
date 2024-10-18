@@ -1,3 +1,4 @@
+import React from "react";
 import { Text, SafeAreaView, Pressable, StyleSheet } from "react-native"
 import { useNavigation } from '@react-navigation/native';
 
