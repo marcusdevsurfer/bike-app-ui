@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react"
 import { Text, StyleSheet, Pressable, TextInput, View } from "react-native"
 import { useNavigation } from '@react-navigation/native';
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 10,
-        backgroundColor: 'black',
+        backgroundColor: '#007bff',
         borderRadius: '6px'
     },
     text: {
