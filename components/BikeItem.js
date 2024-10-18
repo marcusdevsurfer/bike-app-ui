@@ -32,9 +32,8 @@ BikeItem.propTypes = {
 
 const styles = StyleSheet.create({
     bikeItemContainer: {
-        padding: 15,
+        padding: 10,
         margin: 10,
-        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -49,11 +48,9 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     bikeItemInformationContainer: {
-        flex: 1,
-        marginRight: 10,
+        marginRight: 30,
     },
     bikeItemLocationContainer: {
-        flex: 1,
         alignItems: 'flex-end',
     },
     label: {
