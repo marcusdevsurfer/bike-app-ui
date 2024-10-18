@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Platform, StyleSheet } from 'react-native';
 import { BikeItem } from './BikeItem';
 
 
@@ -33,23 +33,104 @@ const bicicles = [
             id: "3",
             name: "Brisas"
         }
-    }
+    },
+    {
+        id: '4',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
+    {
+        id: '5',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
+    {
+        id: '6',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
+    {
+        id: '7',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
+    {
+        id: '8',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
+    {
+        id: '9',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    }, {
+        id: '10',
+        serialNumber: '7678HG',
+        model: "2024",
+        status: "in repair",
+        station: {
+            id: "3",
+            name: "Brisas"
+        }
+    },
 ];
 
 export const BikesTable = () => {
     return (
-        <View>
-            <FlatList
-                data={bicicles}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <BikeItem bike={item} />
-                )}
-            />
-        </View>
+        <FlatList
+            style={styles.flat}
+            data={bicicles}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+                <BikeItem bike={item} />
+            )}
+            horizontal={Platform.OS === 'web' ? true : false}
+        />
     )
 }
 
-
-
+const styles = StyleSheet.create({
+    flat: {
+        width: '95%',
+        margin: 'auto',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+});
 
