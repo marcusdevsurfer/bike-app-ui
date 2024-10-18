@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BikesView } from './components/BikesView';
@@ -8,26 +7,52 @@ import { BikesAppointmentsView } from './components/BikesAppointmentsView';
 import { AddBikeForm } from './components/AddBikeFom';
 
 const Stack = createNativeStackNavigator();
+
+const SCREEN_NAMES = {
+    HOME: 'Inicio',
+    BIKES_VIEW: 'BikesView',
+    BIKES_APPOINTMENTS_VIEW: 'BikesAppointmentsView',
+    ADD_BIKE_FORM: 'AddBikeForm',
+};
+
 export const AppNavigator = () => {
     return (
         <NavigationContainer >
-            <Stack.Navigator initialRouteName="Inicio" >
-                <Stack.Screen name="Inicio" options={{
-                    title: '',
-                }} component={Home} />
+            <Stack.Navigator initialRouteName={SCREEN_NAMES.HOME} >
 
-                <Stack.Screen name="BikesView" options={{
-                    title: '',
-                }} component={BikesView} />
+                <Stack.Screen
+                    name={SCREEN_NAMES.HOME}
+                    options={{
+                        title: '',
+                    }}
+                    component={Home}
+                />
 
-                <Stack.Screen name="BikesAppointmentsView" options={{
-                    title: '',
-                }} component={BikesAppointmentsView} />
+                <Stack.Screen
+                    name={SCREEN_NAMES.BIKES_VIEW}
+                    options={{
+                        title: '',
+                    }}
+                    component={BikesView}
+                />
 
-                <Stack.Screen name="AddBikeForm" options={{
-                    title: '',
-                }} component={AddBikeForm} />
+                <Stack.Screen
+                    name={SCREEN_NAMES.BIKES_APPOINTMENTS_VIEW}
+                    options={{
+                        title: '',
+                    }}
+                    component={BikesAppointmentsView}
+                />
+
+                <Stack.Screen
+                    name={SCREEN_NAMES.ADD_BIKE_FORM}
+                    options={{
+                        title: 'Nueva Bicicleta',
+                    }}
+                    component={AddBikeForm}
+                />
             </Stack.Navigator>
+
         </NavigationContainer>
     );
 };
