@@ -1,12 +1,15 @@
 import React from "react";
 import { BikesTable } from "./BikesTable";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Platform } from "react-native";
 import { BikesActions } from "./BikesActions";
 
 export const BikesView = () => {
+
     return (
         <View contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Registro de Bicicletas</Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>Registro de Bicicletas</Text>
+            </View>
             <View style={styles.actionsContainer}>
                 <BikesActions />
             </View>
@@ -27,24 +30,31 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 35,
-        margin: 20,
         fontWeight: 'bold',
         color: '#333',
     },
+    titleContainer: {
+        width: '95%',
+        paddingTop: 20,
+        paddingBottom: 20,
+        marginBottom: 5,
+        margin: 'auto',
+        alignItems: Platform.OS == 'ios' && 'center'
+    },
     actionsContainer: {
-        width: '100%',
-        marginBottom: 20,
-        padding: 10,
+        width: '95%',
+        margin: 'auto',
         backgroundColor: '#fff',
+        marginBottom: 20,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        elevation: 3,
     },
     tableContainer: {
-        width: '100%',
+        width: '95%',
+        margin: 'auto',
         padding: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
