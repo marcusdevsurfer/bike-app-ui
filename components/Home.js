@@ -1,37 +1,57 @@
-import React from "react";
-import { Text, SafeAreaView, Pressable, StyleSheet } from "react-native"
+import React from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export const Home = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+
     return (
-        <SafeAreaView style={styles.container}>
-            <Pressable style={styles.button} onPress={() => navigation.navigate('BikesView')}>
-                <Text style={styles.text}>Administrar bicicletas</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
+
+            <Pressable
+                style={styles.button}
+                onPress={() => navigation.navigate('BikesView')}
+            >
+                <Text style={styles.buttonText}>Ver Bicicletas</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={() => navigation.navigate('BikesAppointmentsView')}>
-                <Text style={styles.text}>Citas</Text>
+
+            <Pressable
+                style={styles.button}
+                onPress={() => navigation.navigate('AddBikeForm')}
+            >
+                <Text style={styles.buttonText}>Añadir Bicicleta</Text>
             </Pressable>
-        </SafeAreaView>
-    )
-}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'row',
+        flex: 1,
         justifyContent: 'center',
-        flexWrap: 'wrap',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: '#f8f9fa',
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        marginBottom: 40,
+        color: '#333',
+        textAlign: 'center',
     },
     button: {
-        flexGrow: 1,
-        backgroundColor: 'black',
-        padding: 30,
-        margin: 10,
-        borderRadius: '20px'
+        padding: 15,
+        backgroundColor: '#007bff',
+        borderRadius: 5,
+        marginTop: 20,
+        width: '50%',
+        alignItems: 'center',
     },
-    text: {
+    buttonText: {
         color: 'white',
-        fontSize: 22
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
