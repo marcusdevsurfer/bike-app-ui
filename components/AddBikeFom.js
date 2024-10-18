@@ -82,13 +82,10 @@ export const AddBikeForm = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1,    
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        backgroundColor: '#f8f9fa',
-        borderRadius: 10,
-        margin: 20,
+        backgroundColor: '#fff',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
@@ -96,7 +93,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontSize: 24,
+        fontSize: 35,
         fontWeight: 'bold',
         marginBottom: 20,
     },
