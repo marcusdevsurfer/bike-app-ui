@@ -114,15 +114,19 @@ export const BikesTable = () => {
             renderItem={({ item }) => (
                 <BikeItem bike={item} />
             )}
-            horizontal={Platform.OS === 'web' ? true : false}
+            numColumns={Platform.OS === 'web' ? 5 : 1}
+            contentContainerStyle={{
+                justifyContent: 'center',
+                alignItems: Platform.OS === 'web' ? 'center' : 'stretch',
+            }
+            }
         />
     )
 }
 
 const styles = StyleSheet.create({
     flat: {
-        width: '95%',
-        margin: 'auto',
+        width: '100%',
         padding: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
