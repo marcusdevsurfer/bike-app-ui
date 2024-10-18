@@ -12,6 +12,8 @@ export const BikeItem = ({ bike }) => {
                 <Text style={styles.value}>{bike?.model}</Text>
             </View>
             <View style={styles.bikeItemLocationContainer}>
+                <Text style={styles.label}>Serial number:</Text>
+                <Text style={styles.value}>{bike?.serialNumber}</Text>
                 <Text style={styles.label}>Estación:</Text>
                 <Text style={styles.value}>{bike?.station.name}</Text>
             </View>
