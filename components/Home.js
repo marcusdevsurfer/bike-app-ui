@@ -1,24 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from "expo-router";
 
 export const Home = () => {
-    const navigation = useNavigation();
-
+    const router = useRouter()
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
-
             <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate('BikesView')}
+                onPress={() => router.push('/bikes')}
             >
                 <Text style={styles.buttonText}>Ver Bicicletas</Text>
             </Pressable>
-
             <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate('AddBikeForm')}
+                onPress={() => router.push('/add-bike')}
             >
                 <Text style={styles.buttonText}>Añadir Bicicleta</Text>
             </Pressable>

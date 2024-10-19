@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, Text, FlatList, Pressable, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Alert, FlatList, Pressable } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const stations = [
     { id: "1", name: "Soriana" },
@@ -7,11 +8,13 @@ const stations = [
     { id: "3", name: "Brisas" }
 ];
 
-export const AddBikeForm = () => {
-    const [selectedStation, setSelectedStation] = useState(null);
+
+
+export default function AddBike() {
+    const insets = useSafeAreaInsets()
     const [serialState, setSerialState] = useState('');
     const [modelState, setModelState] = useState('');
-
+    const [selectedStation, setSelectedStation] = useState(null);
     useEffect(() => {
         console.log(`${serialState},${modelState}, ${selectedStation}`);
     }, [serialState, modelState]);
@@ -23,21 +26,20 @@ export const AddBikeForm = () => {
     const isFormValid = () => {
         return serialState.trim() !== '' && modelState.trim() !== '' && selectedStation !== null;
     };
-
     const addBike = () => {
         const bike = {
             serial: serialState,
             model: modelState,
-            station: selectedStation,   
-        }  
+            station: selectedStation,
+        }
         if (!isFormValid()) {
             Alert.alert('Error', 'Todos los campos son requeridos');
             return;
         }
-        Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');    
+        Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');
         console.log('Bike added:', bike);
         clearForm();
-    };   
+    };
 
     const clearForm = () => {
         setSerialState('');
@@ -46,10 +48,17 @@ export const AddBikeForm = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            flex: 1,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            justifyContent: 'center',
+        }}>
             <Text style={styles.title}>Añadir Bicicleta</Text>
-            <TextInput style={styles.input} value={serialState} onChangeText={setSerialState} placeholder='Número de serial' />
-            <TextInput style={styles.input} value={modelState} onChangeText={setModelState} placeholder='Modelo' />
+            <View style={styles.inputContainer}>
+                <TextInput style={styles.input} value={serialState} onChangeText={setSerialState} placeholder='Número de serial' />
+                <TextInput style={styles.input} value={modelState} onChangeText={setModelState} placeholder='Modelo' />
+            </View>
             <View style={styles.flatContainer}>
                 <FlatList
                     style={styles.flat}
@@ -73,34 +82,32 @@ export const AddBikeForm = () => {
                     contentContainerStyle={styles.flatContent}
                 />
             </View>
-            <Pressable style={styles.button} onPress={() => addBike()}>
-                <Text style={styles.buttonText}>Añadir</Text>
-            </Pressable>
+            <View>
+                <Pressable style={styles.button} onPress={() => addBike()}>
+                    <Text style={styles.buttonText}>Añadir</Text>
+                </Pressable>
+            </View>
+
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
     title: {
+        textAlign: 'center',
         fontSize: 35,
         fontWeight: 'bold',
         marginBottom: 20,
+    },
+    inputContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     input: {
         margin: 10,
         padding: 10,
         height: 40,
-        width: 250,
+        width: '70%',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
@@ -108,6 +115,8 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 10,
+
+        margin: 'auto',
         backgroundColor: '#007bff',
         borderRadius: 5,
         marginTop: 20,

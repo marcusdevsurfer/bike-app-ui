@@ -4,9 +4,8 @@ import { Text, StyleSheet, View, Platform } from "react-native";
 import { BikesActions } from "./BikesActions";
 
 export const BikesView = () => {
-
     return (
-        <View contentContainerStyle={styles.container}>
+        <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Registro de Bicicletas</Text>
             </View>
