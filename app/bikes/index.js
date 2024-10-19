@@ -1,10 +1,8 @@
 import React from "react";
-import { View, StyleSheet, FlatList, Text, TextInput, Pressable } from "react-native";
+import { View, StyleSheet, FlatList, Text, TextInput, Pressable, Platform } from "react-native";
 import { BikeItem } from "../../components/BikeItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-
-
 
 const bikes = [
     { id: '1', serialNumber: '1234AB', model: "2022", status: "available", station: { name: "Soriana" } },
@@ -44,11 +42,17 @@ const BikesActions = () => {
 }
 const BikesTable = () => {
     return (
-        <View style={{flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <FlatList
                 data={bikes}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <BikeItem bike={item} />}
+                renderItem={({ item }) => <BikeItem bike={item}
+                />}
+                contentContainerStyle={{
+                    justifyContent: 'center',
+                    flexDirection: Platform.OS === 'web' && 'row',
+                    flexWrap: Platform.OS === 'web' && 'wrap',
+                }}
             />
         </View>
     )
