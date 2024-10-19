@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert, FlatList, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from 'expo-router';
 
 const stations = [
     { id: "1", name: "Soriana" },
@@ -9,23 +10,21 @@ const stations = [
 ];
 
 
-
-export default function AddBike() {
-    const insets = useSafeAreaInsets()
+const BikeForm = () => {
     const [serialState, setSerialState] = useState('');
     const [modelState, setModelState] = useState('');
     const [selectedStation, setSelectedStation] = useState(null);
+
+    const router = useRouter();
+
     useEffect(() => {
         console.log(`${serialState},${modelState}, ${selectedStation}`);
     }, [serialState, modelState]);
 
-    const selectStation = (id) => {
-        setSelectedStation(id);
-    };
-
     const isFormValid = () => {
         return serialState.trim() !== '' && modelState.trim() !== '' && selectedStation !== null;
     };
+
     const addBike = () => {
         const bike = {
             serial: serialState,
@@ -47,106 +46,111 @@ export default function AddBike() {
         setSelectedStation(null);
     };
 
+    const selectStation = (id) => {
+        setSelectedStation(id);
+    };
+
     return (
-        <View style={{
-            flex: 1,
-            paddingTop: insets.top,
-            paddingBottom: insets.bottom,
-            justifyContent: 'center',
-        }}>
+        <View style={styles.formContainer}>
             <Text style={styles.title}>Añadir Bicicleta</Text>
-            <View style={styles.inputContainer}>
-                <TextInput style={styles.input} value={serialState} onChangeText={setSerialState} placeholder='Número de serial' />
-                <TextInput style={styles.input} value={modelState} onChangeText={setModelState} placeholder='Modelo' />
-            </View>
-            <View style={styles.flatContainer}>
-                <FlatList
-                    style={styles.flat}
-                    data={stations}
-                    horizontal={true}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <Pressable
-                            style={[
-                                styles.item,
-                                selectedStation === item.id && styles.selectedItem
-                            ]}
-                            onPress={() => selectStation(item.id)}
-                        >
-                            <Text style={[
-                                styles.itemText,
-                                selectedStation === item.id && styles.selectedItemText
-                            ]}>{item.name}</Text>
-                        </Pressable>
-                    )}
-                    contentContainerStyle={styles.flatContent}
-                />
-            </View>
-            <View>
+            <TextInput
+                style={styles.input}
+                value={serialState}
+                onChangeText={setSerialState}
+                placeholder='Número de serial'
+            />
+            <TextInput
+                style={styles.input}
+                value={modelState}
+                onChangeText={setModelState}
+                placeholder='Modelo'
+            />
+            <FlatList
+                data={stations}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <Pressable
+                        style={[
+                            styles.item,
+                            selectedStation === item.id && styles.selectedItem
+                        ]}
+                        onPress={() => selectStation(item.id)}
+                    >
+                        <Text style={[
+                            styles.itemText,
+                            selectedStation === item.id && styles.selectedItemText
+                        ]}>{item.name}</Text>
+                    </Pressable>
+                )}
+                contentContainerStyle={styles.flatContent}
+            />
+            <View style={{
+                flexDirection: 'row',
+            }}>
+                <Pressable style={[styles.cancelButton]} onPress={() => router.back()}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                </Pressable>
                 <Pressable style={styles.button} onPress={() => addBike()}>
                     <Text style={styles.buttonText}>Añadir</Text>
                 </Pressable>
             </View>
 
         </View>
-    )
+    );
+}
+
+export default function AddBike() {
+    const insets = useSafeAreaInsets();
+    return (
+        <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <BikeForm />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f8f9fa',
+    },
+    navigationButton: {
+        padding: 10,
+        backgroundColor: '#007bff',
+        borderRadius: 5,
+        marginBottom: 20,
+    },
+    navigationButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    formContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
     title: {
-        textAlign: 'center',
-        fontSize: 35,
+        fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
     },
-    inputContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     input: {
-        margin: 10,
-        padding: 10,
+        width: 250,
         height: 40,
-        width: '70%',
-        borderWidth: 1,
         borderColor: '#ccc',
+        borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: '#fff',
-    },
-    button: {
         padding: 10,
-
-        margin: 'auto',
-        backgroundColor: '#007bff',
-        borderRadius: 5,
-        marginTop: 20,
-    },
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    flatContainer: {
-        width: '100%',
-        alignItems: 'center',
-    },
-    flat: {
-        marginTop: 20,
-    },
-    flatContent: {
-        justifyContent: 'center',
+        marginVertical: 10,
+        backgroundColor: '#fff',
     },
     item: {
         padding: 10,
-        marginHorizontal: 10,
-        fontSize: 18,
-        height: 44,
+        margin: 10,
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
     },
     selectedItem: {
         backgroundColor: '#007bff',
@@ -156,5 +160,27 @@ const styles = StyleSheet.create({
     },
     selectedItemText: {
         color: '#fff',
+    },
+    button: {
+        padding: 10,
+        backgroundColor: '#007bff',
+        borderRadius: 5,
+        marginVertical: 20,
+        marginHorizontal: 10,
+    },
+
+    cancelButton: {
+        padding: 10,
+        backgroundColor: 'red',
+        borderRadius: 5,
+        marginVertical: 20,
+        marginHorizontal: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    flatContent: {
+        flexDirection: 'row',
     },
 });

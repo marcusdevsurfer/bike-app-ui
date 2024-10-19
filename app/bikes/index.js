@@ -75,8 +75,11 @@ export default function BikesView() {
                     style={{
                         padding: 10,
                         backgroundColor: '#007bff',
+                        borderRadius: 5,
+                        marginVertical: 20,
+                        marginHorizontal: 10,
                     }}
-                    onPress={() => router.push('/')}
+                    onPress={() => router.back()}
                 >
                     <Text style={{
                         color: 'white',
