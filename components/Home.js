@@ -15,9 +15,9 @@ export const Home = () => {
             </Pressable>
             <Pressable
                 style={styles.button}
-                onPress={() => router.push('/add-bike')}
+                onPress={() => router.push('/appointments')}
             >
-                <Text style={styles.buttonText}>Añadir Bicicleta</Text>
+                <Text style={styles.buttonText}>Citas</Text>
             </Pressable>
         </View>
     );
