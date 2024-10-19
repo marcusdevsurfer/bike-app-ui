@@ -42,7 +42,7 @@ const BikesActions = () => {
 }
 const BikesTable = () => {
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.tableContainer}>
             <FlatList
                 data={bikes}
                 keyExtractor={(item) => item.id}
@@ -59,13 +59,31 @@ const BikesTable = () => {
 }
 
 export default function BikesView() {
+    const router = useRouter()
     const insets = useSafeAreaInsets()
     return (
         <View style={{
             flex: 1,
             paddingTop: insets.top,
+            paddingBottom: insets.bottom,
         }
         }>
+            <View style={{
+                alignItems: 'flex-start',
+            }}>
+                <Pressable
+                    style={{
+                        padding: 10,
+                        backgroundColor: '#007bff',
+                    }}
+                    onPress={() => router.push('/')}
+                >
+                    <Text style={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                    }}>Inicio</Text>
+                </Pressable>
+            </View>
             <BikesTitle />
             <BikesActions />
             <BikesTable />
@@ -85,6 +103,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        padding: 15,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    tableContainer: {
+        flex: 1,
+        margin: 10,
         padding: 15,
         backgroundColor: '#fff',
         borderRadius: 10,
@@ -115,6 +145,9 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    backButton: {
+
     },
     buttonText: {
         color: 'white',
