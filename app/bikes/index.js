@@ -44,24 +44,22 @@ const BikesActions = () => {
 }
 const BikesTable = () => {
     return (
-        <View>
+        <View style={{flex: 1 }}>
             <FlatList
                 data={bikes}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <BikeItem bike={item} />}
             />
         </View>
-
     )
 }
 
 export default function BikesView() {
     const insets = useSafeAreaInsets()
     return (
-
         <View style={{
+            flex: 1,
             paddingTop: insets.top,
-            paddingBottom: insets.bottom,
         }
         }>
             <BikesTitle />
