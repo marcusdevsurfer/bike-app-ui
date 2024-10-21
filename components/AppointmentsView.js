@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Platform } from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Platform, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const fetchAppointments = () => {
     return new Promise((resolve) => {
@@ -12,11 +13,7 @@ const fetchAppointments = () => {
                 { id: '2', bikeSerial: '5678CD', date: '2024-10-21', time: '11:00 AM', station: 'Capdam' },
                 { id: '3', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
                 { id: '4', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '5', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '6', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '7', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '8', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-            ]);
+                { id: '5', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },]);
         }, 2000);
     });
 };
@@ -25,6 +22,7 @@ const getTodayAppointments = (appointments) => {
     const today = new Date().toISOString().split('T')[0];
     return appointments.filter(appointment => appointment.date === today);
 };
+
 const formatDate = (dateString) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -44,17 +42,16 @@ const AppointmentItem = ({ appointment }) => (
 
 export default function AppointmentsView() {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchAppointments().then(data => {
-            setAppointments(data);
+            setAppointments(getTodayAppointments(data));
             setLoading(false);
         });
     }, []);
-
-    const todayAppointments = getTodayAppointments(appointments);   
 
     const today = new Date().toISOString().split('T')[0];
     const formattedToday = formatDate(today);
@@ -62,20 +59,28 @@ export default function AppointmentsView() {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => router.push('/')} style={styles.backButton}>
+                    <MaterialIcons name="arrow-back" size={24} color="#007bff" />
+                    <Text style={styles.backButtonText}>Inicio</Text>
+                </TouchableOpacity>
+                <Text style={styles.bikeCount}>Bicicletas: {appointments.length}</Text>
+            </View>
             <Text style={styles.title}>Citas Registradas</Text>
             <Text style={styles.subtitle}>Hoy es {formattedToday}. Mostrando citas para hoy.</Text>
-            {loading ? (
-                <ActivityIndicator size="large" color="#007bff" />
-            ) : todayAppointments.length > 0 ? (
-                <FlatList
-                    data={todayAppointments}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <AppointmentItem appointment={item} />}
-                    contentContainerStyle={styles.listContent}
-                />
-            ) : (
-                <Text style={styles.noAppointmentsText}>No hay citas para hoy.</Text>
-            )}
+            {
+                loading ? <ActivityIndicator size="large" color="#007bff" /> :
+                    appointments.length > 0 ? (
+                        <FlatList
+                            data={appointments}
+                            renderItem={({ item }) => <AppointmentItem appointment={item} />}
+                            keyExtractor={item => item.id}
+                            horizontal={Platform.OS === 'web'}
+                            contentContainerStyle={styles.listContent}
+                        />
+                    ) : (
+                        <Text style={styles.noAppointmentsText}>No hay citas para hoy.</Text>
+                    )}
         </View>
     );
 }
@@ -92,15 +97,34 @@ AppointmentItem.propTypes = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
         backgroundColor: '#f8f9fa',
     },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: 20,
+    },
+    backButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    backButtonText: {
+        fontSize: 18,
+        color: '#007bff',
+        marginLeft: 5,
+    },
+    bikeCount: {
+        fontSize: 18,
+        color: '#007bff',
+    },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     subtitle: {
         fontSize: 18,
@@ -111,7 +135,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         justifyContent: 'center',
-        flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',    
     },
     itemContainer: {
         padding: 30,
@@ -133,12 +156,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginLeft: 10,
-        color: '#007bff',
     },
     itemText: {
         fontSize: 16,
-        color: '#333',
-        marginBottom: 5,
+        marginVertical: 2,
     },
     loadingText: {
         fontSize: 18,
@@ -152,5 +173,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
-
 });
