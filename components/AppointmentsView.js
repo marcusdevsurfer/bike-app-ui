@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        marginBottom: 20,
+        marginVertical: 20,
     },
     backButton: {
         flexDirection: 'row',
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         justifyContent: 'center',
+        alignItems: 'flex-start',
     },
     itemContainer: {
         padding: 30,
