@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
     container: {
@@ -30,7 +30,7 @@ export const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input: {
-        width: 250,
+        width: Platform.OS === 'web' ? 400 : 300,
         height: 40,
         borderColor: '#ccc',
         borderWidth: 1,
