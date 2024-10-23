@@ -4,28 +4,20 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-
-const fetchAppointments = () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve([
-                { id: '1', bikeSerial: '1234AB', date: '2024-10-22', time: '10:00 AM', station: 'Soriana' },
-                { id: '2', bikeSerial: '5678CD', date: '2024-10-21', time: '11:00 AM', station: 'Capdam' },
-                { id: '3', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '4', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },
-                { id: '5', bikeSerial: '7678HG', date: '2024-10-21', time: '12:00 PM', station: 'Brisas' },]);
-        }, 2000);
-    });
-};
-
-const getTodayAppointments = (appointments) => {
-    const today = new Date().toISOString().split('T')[0];
-    return appointments.filter(appointment => appointment.date === today);
-};
+import { fetchAppointments } from "../app/repository/appointmentRepository";
 
 const formatDate = (dateString) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+const getTodayAppointments = (appointments) => {
+    const today = new Date().toISOString().split('T')[0];
+    console.log('Today:  ' + today);
+    return appointments.filter(appointment => {
+        console.log(appointment.date);
+        return appointment.date === today;
+    });
 };
 
 const AppointmentItem = ({ appointment }) => (
