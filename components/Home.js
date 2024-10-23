@@ -19,6 +19,12 @@ export const Home = () => {
             >
                 <Text style={styles.buttonText}>Citas</Text>
             </Pressable>
+            <Pressable
+                style={styles.button}
+                onPress={() => router.push('appointments/create-appointment')}
+            >
+                <Text style={styles.buttonText}>Crear cita</Text>
+            </Pressable>
         </View>
     );
 };
