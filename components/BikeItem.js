@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export const BikeItem = ({ bike }) => {
     return (
-        <View style={styles.bikeItemContainer}>
+        <View key={bike._id} style={styles.bikeItemContainer}>
             <View style={styles.bikeItemInformationContainer}>
                 <Text style={styles.label}>Estado:</Text>
                 <Text style={styles.value}>{bike?.status}</Text>
@@ -14,8 +14,8 @@ export const BikeItem = ({ bike }) => {
             <View style={styles.bikeItemLocationContainer}>
                 <Text style={styles.label}>Serial number:</Text>
                 <Text style={styles.value}>{bike?.serialNumber}</Text>
-                <Text style={styles.label}>Estación:</Text>
-                <Text style={styles.value}>{bike?.station.name}</Text>
+                {/* <Text style={styles.label}>Estación:</Text>
+                <Text style={styles.value}>{bike?.station.name}</Text> */}
             </View>
         </View>
     );
@@ -23,12 +23,11 @@ export const BikeItem = ({ bike }) => {
 
 BikeItem.propTypes = {
     bike: PropTypes.shape({
+        _id: PropTypes.string,
         serialNumber: PropTypes.string,
         status: PropTypes.string,
         model: PropTypes.string,
-        station: PropTypes.shape({
-            name: PropTypes.string
-        })
+
     })
 };
 
