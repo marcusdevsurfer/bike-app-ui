@@ -5,8 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { fetchBikes } from "../repository/bikeRepository";
-
+import { API_URL } from '@env';
 
 const Header = () => {
     const router = useRouter()
@@ -53,7 +52,7 @@ const BikesTable = ({ bikes }) => {
     return (
         <FlatList
             data={bikes}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => <BikeItem bike={item}
             />}
             contentContainerStyle={styles.tableContainer}
@@ -63,14 +62,11 @@ const BikesTable = ({ bikes }) => {
 
 BikesTable.propTypes = {
     bikes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired,
         serialNumber: PropTypes.string.isRequired,
-        model: PropTypes.string.isRequired,
+        model: PropTypes.string,
         status: PropTypes.string.isRequired,
-        station: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-        }).isRequired,
-    })).isRequired,
+    }))
 };
 
 
@@ -80,11 +76,19 @@ export default function BikesView() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetchBikes().then(data => {
+        fetchBikes()
+    }, [])
+    
+    const fetchBikes = async () => {
+        try {
+            const response = await fetch(`${API_URL}/bikes`)
+            const data = await response.json()
             setBikes(data)
             setIsLoading(false)
-        })
-    }, [])
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
