@@ -2,24 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert, FlatList, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
-
+import { globalStyles } from '../styles/globalStyles';
+import { HeaderNavigation } from './components/HeaderNavigation';
 const stations = [
     { id: "1", name: "Soriana" },
     { id: "2", name: "Capdam" },
     { id: "3", name: "Brisas" }
 ];
 
-
 const BikeForm = () => {
+    const router = useRouter();
+    const insets = useSafeAreaInsets();
+
     const [serialState, setSerialState] = useState('');
     const [modelState, setModelState] = useState('');
     const [selectedStation, setSelectedStation] = useState(null);
-
-    const router = useRouter();
-
-    useEffect(() => {
-        console.log(`${serialState},${modelState}, ${selectedStation}`);
-    }, [serialState, modelState]);
 
     const isFormValid = () => {
         return serialState.trim() !== '' && modelState.trim() !== '' && selectedStation !== null;
@@ -51,99 +48,82 @@ const BikeForm = () => {
     };
 
     return (
-        <View style={styles.formContainer}>
-            <Text style={styles.title}>Añadir Bicicleta</Text>
-            <TextInput
-                style={styles.input}
-                value={serialState}
-                onChangeText={setSerialState}
-                placeholder='Número de serial'
-            />
-            <TextInput
-                style={styles.input}
-                value={modelState}
-                onChangeText={setModelState}
-                placeholder='Modelo'
-            />
-            <FlatList
-                data={stations}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <Pressable
-                        style={[
-                            styles.item,
-                            selectedStation === item.id && styles.selectedItem
-                        ]}
-                        onPress={() => selectStation(item.id)}
-                    >
-                        <Text style={[
-                            styles.itemText,
-                            selectedStation === item.id && styles.selectedItemText
-                        ]}>{item.name}</Text>
-                    </Pressable>
-                )}
-                contentContainerStyle={styles.flatContent}
-            />
-            <View style={{
-                flexDirection: 'row',
-            }}>
-                <Pressable style={[styles.cancelButton]} onPress={() => router.back()}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                </Pressable>
-                <Pressable style={styles.button} onPress={() => addBike()}>
-                    <Text style={styles.buttonText}>Añadir</Text>
-                </Pressable>
+        <View style={[globalStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <HeaderNavigation />
+            <View style={styles.titleContainer}>
+                <Text style={globalStyles.title}>Añadir Bicicleta</Text>
+                <Text style={globalStyles.subtitle}>Añade una nueva bicicleta a el registro.</Text>
             </View>
+            <View style={styles.formContainer}>
 
+                <Text style={globalStyles.text}>Numero de serial</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    value={serialState}
+                    onChangeText={setSerialState}
+                    placeholder="ej. 0987AS" />
+
+
+                <Text style={globalStyles.text}>Modelo</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    value={modelState}
+                    onChangeText={setModelState}
+                    placeholder="ej. 2020" />
+
+
+                <FlatList
+                    data={stations}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <Pressable
+                            style={[
+                                styles.item,
+                                selectedStation === item.id && styles.selectedItem
+                            ]}
+                            onPress={() => selectStation(item.id)}
+                        >
+                            <Text style={[
+                                styles.itemText,
+                                selectedStation === item.id && styles.selectedItemText
+                            ]}>{item.name}</Text>
+                        </Pressable>
+                    )}
+                    contentContainerStyle={styles.flatContent}
+                />
+                <View style={{
+                    flexDirection: 'row',
+                }}>
+                    <Pressable style={[styles.cancelButton]} onPress={() => router.push('/')}>
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={() => addBike()}>
+                        <Text style={styles.buttonText}>Añadir</Text>
+                    </Pressable>
+                </View>
+
+            </View>
         </View>
     );
 }
 
 export default function AddBike() {
-    const insets = useSafeAreaInsets();
     return (
-        <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-            <BikeForm />
-        </View>
+        <BikeForm />
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    titleContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f8f9fa',
+        padding: 20,
     },
-    navigationButton: {
-        padding: 10,
-        backgroundColor: '#007bff',
-        borderRadius: 5,
-        marginBottom: 20,
-    },
-    navigationButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
+
     formContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    input: {
-        width: 250,
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginVertical: 10,
-        backgroundColor: '#fff',
+        padding: 20,
     },
     item: {
         padding: 10,
