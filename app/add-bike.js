@@ -6,7 +6,7 @@ import { globalStyles } from '../styles/globalStyles';
 import { HeaderNavigation } from './components/HeaderNavigation';
 import { API_URL } from '@env';
 
-const BikeForm = () => {
+export default function AddBike() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
@@ -116,9 +116,7 @@ const BikeForm = () => {
                     )}
                     contentContainerStyle={styles.flatContent}
                 />
-                <View style={{
-                    flexDirection: 'row',
-                }}>
+                <View style={styles.submitActionsContainer}>
                     <Pressable style={[styles.cancelButton]} onPress={() => router.push('/bikes')}>
                         <Text style={styles.buttonText}>Cancelar</Text>
                     </Pressable>
@@ -131,11 +129,6 @@ const BikeForm = () => {
     );
 }
 
-export default function AddBike() {
-    return (
-        <BikeForm />
-    );
-}
 
 const styles = StyleSheet.create({
     titleContainer: {
@@ -148,6 +141,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+    },
+
+    submitActionsContainer: {
+        flexDirection: 'row'
     },
     item: {
         padding: 10,
