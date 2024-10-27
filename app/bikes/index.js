@@ -39,7 +39,7 @@ const BikesActions = () => {
                 placeholder="Buscar bicicleta"
             />
             <Pressable
-                onPress={() => router.push('/add-bike')}
+                onPress={() => router.push('bikes/create-bike')}
                 style={styles.button}
             >
                 <Text style={styles.buttonText}>Agregar nuevo</Text>
