@@ -4,11 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
 import { globalStyles } from '../styles/globalStyles';
 import { HeaderNavigation } from './components/HeaderNavigation';
-const stations = [
-    { id: "1", name: "Soriana" },
-    { id: "2", name: "Capdam" },
-    { id: "3", name: "Brisas" }
-];
+import { API_URL } from '@env';
 
 const BikeForm = () => {
     const router = useRouter();
@@ -17,24 +13,55 @@ const BikeForm = () => {
     const [serialState, setSerialState] = useState('');
     const [modelState, setModelState] = useState('');
     const [selectedStation, setSelectedStation] = useState(null);
+    const [stations, setStations] = useState([]);
+
+    useEffect(() => {
+        fetchStations();
+    }, []);
+
+    const fetchStations = async () => {
+        try {
+            const response = await fetch(`${API_URL}/stations`);
+            const data = await response.json();
+            setStations(data);
+        } catch (error) {
+            console.error('Error fetching stations:', error);
+        }
+    }
 
     const isFormValid = () => {
         return serialState.trim() !== '' && modelState.trim() !== '' && selectedStation !== null;
     };
 
-    const addBike = () => {
+    const addBike = async () => {
         const bike = {
-            serial: serialState,
+            serialNumber: serialState,
             model: modelState,
+            status: 'available',
             station: selectedStation,
         }
         if (!isFormValid()) {
             Alert.alert('Error', 'Todos los campos son requeridos');
             return;
         }
-        Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');
-        console.log('Bike added:', bike);
-        clearForm();
+        try {
+            const response = await fetch(`${API_URL}/bikes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bike),
+            });
+            if (response.status !== 201) {
+                throw new Error('Error adding bike');
+            }
+            Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');
+            console.log('Bike added:', bike);
+            clearForm();
+        } catch (error) {
+            console.error('Error adding bike:', error);
+            Alert.alert('Error', 'Error añadiendo bicicleta');
+        }
     };
 
     const clearForm = () => {
@@ -63,7 +90,6 @@ const BikeForm = () => {
                     onChangeText={setSerialState}
                     placeholder="ej. 0987AS" />
 
-
                 <Text style={globalStyles.text}>Modelo</Text>
                 <TextInput
                     style={globalStyles.input}
@@ -71,21 +97,20 @@ const BikeForm = () => {
                     onChangeText={setModelState}
                     placeholder="ej. 2020" />
 
-
                 <FlatList
                     data={stations}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item._id}
                     renderItem={({ item }) => (
                         <Pressable
                             style={[
                                 styles.item,
-                                selectedStation === item.id && styles.selectedItem
+                                selectedStation === item._id && styles.selectedItem
                             ]}
-                            onPress={() => selectStation(item.id)}
+                            onPress={() => selectStation(item._id)}
                         >
                             <Text style={[
                                 styles.itemText,
-                                selectedStation === item.id && styles.selectedItemText
+                                selectedStation === item._id && styles.selectedItemText
                             ]}>{item.name}</Text>
                         </Pressable>
                     )}
@@ -94,14 +119,13 @@ const BikeForm = () => {
                 <View style={{
                     flexDirection: 'row',
                 }}>
-                    <Pressable style={[styles.cancelButton]} onPress={() => router.push('/')}>
+                    <Pressable style={[styles.cancelButton]} onPress={() => router.push('/bikes')}>
                         <Text style={styles.buttonText}>Cancelar</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={() => addBike()}>
                         <Text style={styles.buttonText}>Añadir</Text>
                     </Pressable>
                 </View>
-
             </View>
         </View>
     );
