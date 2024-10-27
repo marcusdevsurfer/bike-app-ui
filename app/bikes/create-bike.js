@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert, FlatList, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
-import { globalStyles } from '../styles/globalStyles';
-import { HeaderNavigation } from './components/HeaderNavigation';
+import { globalStyles } from '../../styles/globalStyles';
+import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
 
-export default function AddBike() {
+export default function CreateBike() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
