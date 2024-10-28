@@ -9,6 +9,12 @@ export const Home = () => {
             <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
             <Pressable
                 style={styles.button}
+                onPress={() => router.push('/users')}
+            >
+                <Text style={styles.buttonText}>Usuarios</Text>
+            </Pressable>
+            <Pressable
+                style={styles.button}
                 onPress={() => router.push('/bikes')}
             >
                 <Text style={styles.buttonText}>Ver Bicicletas</Text>
@@ -25,6 +31,7 @@ export const Home = () => {
             >
                 <Text style={styles.buttonText}>Crear cita</Text>
             </Pressable>
+
         </View>
     );
 };
