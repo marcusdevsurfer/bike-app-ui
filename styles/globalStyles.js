@@ -18,12 +18,12 @@ export const globalStyles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 10,
+        margin: 10,
     },
     subtitle: {
         fontSize: 16,
         color: '#666',
-        marginBottom: 10,
+        margin: 10,
     },
     text: {
         fontSize: 16,
