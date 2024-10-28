@@ -1,5 +1,15 @@
 import { StyleSheet, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+export const getInsets = () => {
+    const insets = useSafeAreaInsets();
+    return {
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+    }
+ }
 export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
