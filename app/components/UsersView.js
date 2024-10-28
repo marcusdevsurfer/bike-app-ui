@@ -1,11 +1,35 @@
-import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Text, View, StyleSheet, TextInput, FlatList, ActivityIndicator } from 'react-native'
 import { HeaderNavigation } from './HeaderNavigation'
 import { getInsets, globalStyles } from '../../styles/globalStyles'
 import { MaterialIcons } from '@expo/vector-icons';
+import { API_URL } from '@env';
 
 export const UsersView = () => {
+  //input find bar state
   const [input, setInput] = useState('')
+  //users state
+  const [users, setUsers] = useState([])
+  // loading state
+  const [loading, setLoading] = useState(true)
+
+  //fetch users on component mount
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  //fetch users
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${API_URL}/users`)
+      const data = await response.json()
+      setUsers(data)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <View style={[getInsets(), globalStyles.container]}>
       <HeaderNavigation />
@@ -21,16 +45,26 @@ export const UsersView = () => {
           style={globalStyles.input}
           onChangeText={setInput}
           value={input}
-          placeholder='Buscar usuario'
+          placeholder={'Buscar usuario'}
         />
       </View>
-      {/* Items (Users) */}
-      <FlatList
-        data={[
-          { key: '1', name: 'Juan', email: 'Perez', password: '',role: 'admin', phone: '', membershipStatus: 'active', createdAt: '' },]}
-        renderItem={({ item }) => (<Text>{item.name} {item.lastName}</Text>)}
-        contentContainerStyle={{ flex: 1, backgroundColor : '', margin: 10, padding: 10 }}
-      />
+      {
+        //if is loading show activity indicator else show flatlist
+        loading ?
+          <ActivityIndicator
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            size="large" />
+          :
+          <FlatList
+            data={users.filter(user => user.name.toLowerCase().includes(input.toLowerCase()))}
+            renderItem={({ item }) => (<Text>{item.name} {item.lastName}</Text>)}
+            contentContainerStyle={styles.flatContent}
+          />
+      }
     </View>
   )
 }
@@ -48,5 +82,13 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     marginHorizontal: 5,
+  },
+  flatContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'start',
+    backgroundColor: '',
+    margin: 10,
+    padding: 10
   }
 })
