@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, TextInput, FlatList, ActivityIndicator } from 'react-native'
+import { Text, View, StyleSheet, TextInput, FlatList, ActivityIndicator, Platform } from 'react-native'
 import { HeaderNavigation } from './HeaderNavigation'
 import { getInsets, globalStyles } from '../../styles/globalStyles'
 import { MaterialIcons } from '@expo/vector-icons';
 import { API_URL } from '@env';
+import { UserCard } from './UserCard';
 
 export const UsersView = () => {
   //input find bar state
@@ -61,7 +62,7 @@ export const UsersView = () => {
           :
           <FlatList
             data={users.filter(user => user.name.toLowerCase().includes(input.toLowerCase()))}
-            renderItem={({ item }) => (<Text>{item.name} {item.lastName}</Text>)}
+            renderItem={({ item }) => (<UserCard user={item} />)} 
             contentContainerStyle={styles.flatContent}
           />
       }
@@ -85,9 +86,9 @@ const styles = StyleSheet.create({
   },
   flatContent: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'start',
-    backgroundColor: '',
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    alignItems: Platform.OS === 'web' ? 'start' : 'center',
+    justifyContent: Platform.OS === 'web' ? 'center' : 'flex-start',
     margin: 10,
     padding: 10
   }
