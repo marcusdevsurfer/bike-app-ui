@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-import { View, StyleSheet, FlatList, Text, TextInput, Pressable, Platform, ActivityIndicator } from "react-native";
+import { View, StyleSheet, FlatList, Text, TextInput, Platform, ActivityIndicator } from "react-native";
 import { API_URL } from '@env';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BikeItem } from "../../components/BikeItem";
@@ -16,7 +15,7 @@ const HeaderContainer = () => {
     );
 }
 
-const BikesActions = () => {
+const FindBar = ({ value, setValue }) => {
     return (
         <View style={styles.actionsContainer}>
             <View style={styles.searchContainer}>
@@ -25,32 +24,23 @@ const BikesActions = () => {
                     style={styles.input}
                     placeholder="Buscar bicicleta"
                     placeholderTextColor="#666"
+                    value={value}
+                    onChangeText={setValue}
                 />
             </View>
         </View>
     );
 }
 
-const BikesTable = ({ bikes }) => {
-    return (
-        <FlatList
-            data={bikes}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <BikeItem bike={item}
-            />}
-            contentContainerStyle={styles.tableContainer}
-        />
-    )
-}
-
 export const BikesView = () => {
     const [bikes, setBikes] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
         fetchBikes()
     }, [])
-
+    
     const fetchBikes = async () => {
         try {
             const response = await fetch(`${API_URL}/bikes`)
@@ -66,7 +56,7 @@ export const BikesView = () => {
         <View style={[getInsets(), globalStyles.container]}>
             <HeaderNavigation />
             <HeaderContainer />
-            <BikesActions />
+            <FindBar value={inputValue} setValue={setInputValue} />
             {
                 isLoading
                     ?
@@ -74,7 +64,13 @@ export const BikesView = () => {
                         size="large"
                         color="#007bff" />
                     :
-                    <BikesTable bikes={bikes} />
+                    <FlatList
+                        data={bikes.filter((bike) => bike.serialNumber.includes(inputValue))}
+                        keyExtractor={(item) => item._id}
+                        renderItem={({ item }) => <BikeItem bike={item}
+                        />}
+                        contentContainerStyle={styles.flatContainer}
+                    />
             }
         </View>
     );
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
 
     },
-    tableContainer: {
+    flatContainer: {
         padding: 10,
         justifyContent: 'center',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
