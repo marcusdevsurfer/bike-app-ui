@@ -85,10 +85,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   flatContent: {
-    flex: 1,
     flexDirection: Platform.OS === 'web' ? 'row' : 'column',
     alignItems: Platform.OS === 'web' ? 'start' : 'center',
     justifyContent: Platform.OS === 'web' ? 'center' : 'flex-start',
+    flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     margin: 10,
     padding: 10
   }
