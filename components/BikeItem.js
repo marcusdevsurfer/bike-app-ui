@@ -1,21 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export const BikeItem = ({ bike }) => {
     return (
         <View key={bike._id} style={styles.bikeItemContainer}>
             <View style={styles.bikeItemInformationContainer}>
-                <Text style={styles.label}>Estado:</Text>
-                <Text style={styles.value}>{bike?.status}</Text>
-                <Text style={styles.label}>Modelo:</Text>
-                <Text style={styles.value}>{bike?.model}</Text>
+            <View style={styles.infoRow}>
+                    <MaterialIcons name="confirmation-number" size={20} color="#007bff" style={styles.icon} />
+                    <Text style={styles.label}>Biclicleta:</Text>
+                    <Text style={styles.value}>{bike?.serialNumber}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <MaterialIcons name="info" size={20} color="#007bff" style={styles.icon} />
+                    <Text style={styles.label}>Estado:</Text>
+                    <Text style={styles.value}>{bike?.status}</Text>
+                </View>
             </View>
             <View style={styles.bikeItemLocationContainer}>
-                <Text style={styles.label}>Serial number:</Text>
-                <Text style={styles.value}>{bike?.serialNumber}</Text>
-                {/* <Text style={styles.label}>Estación:</Text>
-                <Text style={styles.value}>{bike?.station.name}</Text> */}
+                 <View style={styles.infoRow}>
+                    <MaterialIcons name="location-on" size={20} color="#007bff" style={styles.icon} />
+                    <Text style={styles.label}>Estación:</Text>
+                    <Text style={styles.value}>{bike?.station.name}</Text>
+                </View> 
             </View>
         </View>
     );
@@ -27,7 +35,6 @@ BikeItem.propTypes = {
         serialNumber: PropTypes.string,
         status: PropTypes.string,
         model: PropTypes.string,
-
     })
 };
 
@@ -49,19 +56,28 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     bikeItemInformationContainer: {
-        marginRight: 30,
+    marginRight: 20,
     },
     bikeItemLocationContainer: {
         alignItems: 'flex-end',
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    icon: {
+        marginRight: 5,
     },
     label: {
         fontSize: 14,
         fontWeight: 'bold',
         color: '#333',
+        marginRight: 5,
     },
     value: {
         fontSize: 14,
         color: '#555',
-        marginBottom: 5,
     },
 });
+
+export default BikeItem;
