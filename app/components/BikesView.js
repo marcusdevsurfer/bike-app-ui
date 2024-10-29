@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { View, StyleSheet, FlatList, Text, TextInput, Pressable, Platform, ActivityIndicator } from "react-native";
-
-import { useRouter } from "expo-router";
-import PropTypes from 'prop-types';
 import { API_URL } from '@env';
 import { MaterialIcons } from '@expo/vector-icons';
-
-
 import { BikeItem } from "../../components/BikeItem";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
@@ -32,13 +27,6 @@ const BikesActions = () => {
                     placeholderTextColor="#666"
                 />
             </View>
-            {/* <Pressable
-            onPress={() => router.push('bikes/create-bike')}
-            style={styles.button}
-        >
-            <MaterialIcons name="add" size={24} color="#fff" />
-            <Text style={styles.buttonText}>Agregar nuevo</Text>
-        </Pressable> */}
         </View>
     );
 }
@@ -133,11 +121,8 @@ const styles = StyleSheet.create({
 
     },
     tableContainer: {
-        width: '100%',
         padding: 10,
-        marginVertical: 10,
-        borderRadius: 5,
-        elevation: 3,
+        justifyContent: 'center',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     },
