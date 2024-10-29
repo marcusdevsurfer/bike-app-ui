@@ -5,6 +5,8 @@ import { View, StyleSheet, FlatList, Text, TextInput, Pressable, Platform, Activ
 import { useRouter } from "expo-router";
 import PropTypes from 'prop-types';
 import { API_URL } from '@env';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 import { BikeItem } from "../../components/BikeItem";
 import { HeaderNavigation } from "../components/HeaderNavigation";
@@ -20,19 +22,23 @@ const HeaderContainer = () => {
 }
 
 const BikesActions = () => {
-    const router = useRouter()
     return (
         <View style={styles.actionsContainer}>
-            <TextInput
-                style={styles.input}
-                placeholder="Buscar bicicleta"
-            />
-            <Pressable
-                onPress={() => router.push('bikes/create-bike')}
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>Agregar nuevo</Text>
-            </Pressable>
+            <View style={styles.searchContainer}>
+                <MaterialIcons name="search" size={24} color="#666" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Buscar bicicleta"
+                    placeholderTextColor="#666"
+                />
+            </View>
+            {/* <Pressable
+            onPress={() => router.push('bikes/create-bike')}
+            style={styles.button}
+        >
+            <MaterialIcons name="add" size={24} color="#fff" />
+            <Text style={styles.buttonText}>Agregar nuevo</Text>
+        </Pressable> */}
         </View>
     );
 }
@@ -88,62 +94,64 @@ export const BikesView = () => {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        margin: 10,
-        padding: 10,
+        textAlign: 'justify',
         justifyContent: 'center',
         alignItems: 'center',
     },
 
-    title: {
-        padding: 20,
-        fontSize: 35,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-
     actionsContainer: {
-        width: '100%',
+        margin: 10,
+        padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 20,
-        backgroundColor: '#fff',
+        justifyContent: 'space-around',
         borderRadius: 5,
+    },
+    searchContainer: {
+        flex: 1,
+        padding: 10,
+        margin: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f8f9fa',
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: '#ccc',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
     },
+    searchIcon: {
+        marginRight: 10,
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        fontSize: 16,
 
+    },
     tableContainer: {
         width: '100%',
-        padding: 20,
+        padding: 10,
         marginVertical: 10,
         borderRadius: 5,
         elevation: 3,
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     },
-
-    input: {
-        height: 40,
-        width: Platform.OS === 'web' ? 400 : '50%',
-        padding: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 4,
-        backgroundColor: '#f8f9fa',
-    },
     button: {
-        padding: 10,
         backgroundColor: '#007bff',
-        borderRadius: 6,
-        alignItems: 'center',
+        padding: 10,
+        flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25,
     },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
+        marginLeft: 5,
     },
 });
