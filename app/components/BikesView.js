@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, TextInput, Platform, ActivityIndicator } from "react-native";
+import { View, StyleSheet, FlatList, Text, TextInput, Platform, ActivityIndicator, Pressable } from "react-native";
 import { API_URL } from '@env';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BikeItem } from "../../components/BikeItem";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
+import { router } from "expo-router";
 
 const HeaderContainer = () => {
     return (
@@ -40,7 +41,7 @@ export const BikesView = () => {
     useEffect(() => {
         fetchBikes()
     }, [])
-    
+
     const fetchBikes = async () => {
         try {
             const response = await fetch(`${API_URL}/bikes`)
@@ -56,7 +57,15 @@ export const BikesView = () => {
         <View style={[getInsets(), globalStyles.container]}>
             <HeaderNavigation />
             <HeaderContainer />
+            <Pressable
+                onPress={() => router.push('/bikes/create-bike')}
+                style={[globalStyles.button, {
+                    alignSelf: 'flex-end',
+                }]}>
+                <Text style={globalStyles.buttonText}>Nuevo</Text>
+            </Pressable>
             <FindBar value={inputValue} setValue={setInputValue} />
+
             {
                 isLoading
                     ?
