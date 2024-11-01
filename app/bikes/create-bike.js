@@ -58,6 +58,7 @@ export default function CreateBike() {
             Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');
             console.log('Bike added:', bike);
             clearForm();
+            router.push('/bikes');
         } catch (error) {
             console.error('Error adding bike:', error);
             Alert.alert('Error', 'Error añadiendo bicicleta');
