@@ -30,6 +30,7 @@ export const globalStyles = StyleSheet.create({
         color: '#333',
     },
     button: {
+        margin: 10,
         padding: 10,
         backgroundColor: '#007bff',
         borderRadius: 5,
