@@ -30,7 +30,7 @@ export const CreateAppointmentView = () => {
 
     const handleTimeChange = (event, selectedTime) => {
         const currentTime = selectedTime || time;
-        setShowDatePicker(Platform.OS === 'ios');
+        setShowTimePicker(Platform.OS === 'ios');
         setTime(currentTime);
     };
 
