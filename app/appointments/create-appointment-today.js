@@ -1,11 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, StyleSheet, FlatList, Pressable } from 'react-native'
 import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
+import { API_URL } from '@env';
 
 export default function CreateAppointmentToday() {
+    const [stations, setStations] = useState({});
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedStation, setSelectedStation] = useState(null);
+
+    useEffect(() => {
+        fetchStations();    
+    }, []);
+
+    useEffect(() => {
+        if (selectedStation == null) {
+            return;
+        }
+    }, [selectedStation]);
+
+    const fetchStations = async () => {
+        try {
+            const response = await fetch(`${API_URL}/stations/`)
+            const data = await response.json();
+            setStations(data);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
@@ -20,8 +43,8 @@ export default function CreateAppointmentToday() {
             <View style={styles.stationsContainer}>
                 <Text style={styles.dateText}>Estaciones:</Text>
                 <FlatList
-                    data={['Soriana', 'Brisas', 'Santiago']}
-                    keyExtractor={item => item.toString()}
+                    data={stations}
+                    keyExtractor={item => item._id}
                     horizontal={true}
                     renderItem={({ item }) => (
                         <Pressable style={[
@@ -34,7 +57,7 @@ export default function CreateAppointmentToday() {
                                 styles.stationButtonText,
                                 selectedStation === item && styles.selectedStationButtonText
                             ]}>
-                                {item}
+                                {item?.name}
                             </Text>
                         </Pressable>
                     )}
