@@ -36,12 +36,19 @@ export const Home = () => {
                     <MaterialIcons name="event" size={40} color="#007bff" style={styles.cardIcon} />
                     <Text style={styles.cardText}>Citas</Text>
                 </Pressable>
-                <Pressable
+                {/* <Pressable
                     style={styles.card}
                     onPress={() => router.push('appointments/create-appointment')}
                 >
                     <MaterialIcons name="add-circle" size={40} color="#007bff" style={styles.cardIcon} />
                     <Text style={styles.cardText}>Crear cita</Text>
+                </Pressable> */}
+                <Pressable
+                    style={styles.card}
+                    onPress={() => router.push('appointments/create-appointment-today')}
+                >
+                    <MaterialIcons name="add-circle" size={40} color="#007bff" style={styles.cardIcon} />
+                    <Text style={styles.cardText}>Crear cita para hoy</Text>
                 </Pressable>
             </View>
             <View style={styles.footer}>
