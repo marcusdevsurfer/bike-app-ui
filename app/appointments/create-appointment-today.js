@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, FlatList, Pressable } from 'react-native'
+import { Text, View, StyleSheet, FlatList, Pressable, TextInput } from 'react-native'
 import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
@@ -7,10 +7,14 @@ import { API_URL } from '@env';
 export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
     const [bikes, setBikes] = useState([]);
+    const [users, setUsers] = useState([]);
     const [filteredBikes, setFilteredBikes] = useState([]);
     const [selectedStation, setSelectedStation] = useState(null);
+    const [inputUserName, setInputUserName] = useState(''); 
+
 
     useEffect(() => {
+        fetchUsers();   
         fetchStations();
         fetchBikes();
     }, []);
@@ -20,6 +24,17 @@ export default function CreateAppointmentToday() {
             const response = await fetch(`${API_URL}/stations/`)
             const data = await response.json();
             setStations(data);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(`${API_URL}/users/`)
+            const data = await response.json();
+            setUsers(data);
         }
         catch (error) {
             console.error(error);
@@ -53,6 +68,35 @@ export default function CreateAppointmentToday() {
                 <Text style={styles.dateText}>Fecha de Hoy:</Text>
                 <Text style={styles.dateValue}>{new Date().toLocaleDateString()}</Text>
             </View>
+
+
+            {/* User container */}
+            <View style={styles.userContainer}>
+                <TextInput onChangeText={setInputUserName} placeholder='Escribe tu nombre' style={globalStyles.input}></TextInput>
+                <FlatList
+                        data={users.filter(user => inputUserName === '' ? users : user.name.toLowerCase().includes(inputUserName.toLowerCase()))}  
+                        keyExtractor={user => user._id}
+                        horizontal={true}   
+                        renderItem={({ item }) => (
+                            <Pressable
+                                style={
+                                    {
+                                        padding:10,
+                                        marginHorizontal: 3,
+                                        backgroundColor: '#9999',
+                                        borderRadius: 10,
+                                    }
+                                }
+                            >
+                                <Text>
+                                    {item?.name}
+                                </Text>
+                            </Pressable>
+                        )}
+                        contentContainerStyle={{ padding: 10 }}
+                    />
+            </View>
+
             <View style={styles.stationsContainer}>
                 <Text style={styles.dateText}>Selecciona una Estación:</Text>
                 <FlatList
@@ -80,8 +124,6 @@ export default function CreateAppointmentToday() {
                     contentContainerStyle={{ margin: 10 }}
                 />
             </View>
-
-            {/* Bikes container */}
             <View style={styles.bikesContainer}>
                 <Text style={styles.dateText}>Bicicletas:</Text>
                 {
@@ -129,6 +171,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#007bff',
+    },
+    userContainer: {
+        marginBottom: 20,
+        alignItems: 'center',
     },
     stationsContainer: {
         marginBottom: 20,
