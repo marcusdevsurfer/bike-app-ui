@@ -5,19 +5,16 @@ import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
 
 export default function CreateAppointmentToday() {
-    const [stations, setStations] = useState({});
+    const [stations, setStations] = useState([]);
+    const [bikes, setBikes] = useState([]);
+    const [filteredBikes, setFilteredBikes] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedStation, setSelectedStation] = useState(null);
 
     useEffect(() => {
-        fetchStations();    
+        fetchStations();
+        fetchBikes();
     }, []);
-
-    useEffect(() => {
-        if (selectedStation == null) {
-            return;
-        }
-    }, [selectedStation]);
 
     const fetchStations = async () => {
         try {
@@ -29,6 +26,23 @@ export default function CreateAppointmentToday() {
             console.error(error);
         }
     }
+
+    const fetchBikes = async () => {
+        try {
+            const response = await fetch(`${API_URL}/bikes/`)
+            const data = await response.json();
+            setBikes(data);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const filterBikes = (stationId) => {
+        const filtered = bikes.filter(bike => bike.station === stationId);
+        setFilteredBikes(filtered);
+    };
+
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
@@ -40,8 +54,10 @@ export default function CreateAppointmentToday() {
                 <Text style={styles.dateText}>Fecha de Hoy:</Text>
                 <Text style={styles.dateValue}>{currentDate.toLocaleDateString()}</Text>
             </View>
+
+
             <View style={styles.stationsContainer}>
-                <Text style={styles.dateText}>Estaciones:</Text>
+                <Text style={styles.dateText}>Selecciona una Estación:</Text>
                 <FlatList
                     data={stations}
                     keyExtractor={item => item._id}
@@ -49,13 +65,16 @@ export default function CreateAppointmentToday() {
                     renderItem={({ item }) => (
                         <Pressable style={[
                             styles.stationButton,
-                            selectedStation === item && styles.selectedStationButton
+                            selectedStation === item._id && styles.selectedStationButton
                         ]}
-                            onPress={() => setSelectedStation(item)}
+                            onPress={() => {
+                                setSelectedStation(item._id);
+                                filterBikes(item._id);
+                            }}
                         >
                             <Text style={[
                                 styles.stationButtonText,
-                                selectedStation === item && styles.selectedStationButtonText
+                                selectedStation === item._id && styles.selectedStationButtonText
                             ]}>
                                 {item?.name}
                             </Text>
@@ -64,6 +83,34 @@ export default function CreateAppointmentToday() {
                     contentContainerStyle={{ margin: 10 }}
                 />
             </View>
+
+            {/* Bikes container */}
+            <View style={styles.bikesContainer}>
+                <Text style={styles.dateText}>Bicicletas:</Text>
+                {
+                    <FlatList
+                        data={filteredBikes}
+                        keyExtractor={bike => bike._id}
+                        renderItem={({ item }) => (
+                            <Pressable>
+                                <Text>
+                                    {item?.serialNumber}
+                                </Text>
+                            </Pressable>
+                        )}
+                        contentContainerStyle={{ padding: 10 }}
+                    />
+                }
+            </View>
+
+            {/* Submit container */}
+            <View style={styles.submitContainer}>
+                <Pressable style={styles.submitButton}
+                >
+                    <Text style={styles.submitButtonText}>Reservar Cita</Text>
+                </Pressable>
+            </View>
+
         </View>
     )
 }
@@ -107,11 +154,18 @@ const styles = StyleSheet.create({
     selectedStationButtonText: {
         color: '#fff',
     },
+    bikesContainer: {
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+    submitContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
     submitButton: {
         padding: 15,
         backgroundColor: '#007bff',
         borderRadius: 5,
-        alignItems: 'center',
     },
     submitButtonText: {
         color: '#fff',
