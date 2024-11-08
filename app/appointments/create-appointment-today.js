@@ -8,7 +8,6 @@ export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
     const [bikes, setBikes] = useState([]);
     const [filteredBikes, setFilteredBikes] = useState([]);
-    const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedStation, setSelectedStation] = useState(null);
 
     useEffect(() => {
@@ -39,7 +38,7 @@ export default function CreateAppointmentToday() {
     }
 
     const filterBikes = (stationId) => {
-        const filtered = bikes.filter(bike => bike.station === stationId);
+        const filtered = bikes.filter(bike => bike.station === stationId && bike.status === 'available');
         setFilteredBikes(filtered);
     };
 
@@ -52,10 +51,8 @@ export default function CreateAppointmentToday() {
             </View>
             <View style={styles.dateContainer}>
                 <Text style={styles.dateText}>Fecha de Hoy:</Text>
-                <Text style={styles.dateValue}>{currentDate.toLocaleDateString()}</Text>
+                <Text style={styles.dateValue}>{new Date().toLocaleDateString()}</Text>
             </View>
-
-
             <View style={styles.stationsContainer}>
                 <Text style={styles.dateText}>Selecciona una Estación:</Text>
                 <FlatList
