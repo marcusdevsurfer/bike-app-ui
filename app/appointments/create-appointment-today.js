@@ -10,11 +10,12 @@ export default function CreateAppointmentToday() {
     const [users, setUsers] = useState([]);
     const [filteredBikes, setFilteredBikes] = useState([]);
     const [selectedStation, setSelectedStation] = useState(null);
-    const [inputUserName, setInputUserName] = useState(''); 
+    const [userSelected, setUserSelected] = useState(null);
+    const [inputUserName, setInputUserName] = useState('');
 
 
     useEffect(() => {
-        fetchUsers();   
+        fetchUsers();
         fetchStations();
         fetchBikes();
     }, []);
@@ -69,32 +70,37 @@ export default function CreateAppointmentToday() {
                 <Text style={styles.dateValue}>{new Date().toLocaleDateString()}</Text>
             </View>
 
-
             {/* User container */}
             <View style={styles.userContainer}>
-                <TextInput onChangeText={setInputUserName} placeholder='Escribe tu nombre' style={globalStyles.input}></TextInput>
+                <TextInput onChangeText={setInputUserName} placeholder='Escribe tu nombre' style={[globalStyles.input, { marginBottom: 20 }]}></TextInput>
                 <FlatList
-                        data={users.filter(user => inputUserName === '' ? users : user.name.toLowerCase().includes(inputUserName.toLowerCase()))}  
-                        keyExtractor={user => user._id}
-                        horizontal={true}   
-                        renderItem={({ item }) => (
-                            <Pressable
+                    style={{ marginBottom: 20 }}
+                    data={users.filter(user => inputUserName === '' ? users : user.name.toLowerCase().includes(inputUserName.toLowerCase()))}
+                    keyExtractor={user => user._id}
+                    horizontal={true}
+                    renderItem={({ item }) => (
+                        <Pressable
+                            style={
+                                [
+                                    styles.userButton,
+                                    userSelected === item._id && { backgroundColor: '#666' }
+                                ]
+                            }
+                            onPress={() => setUserSelected(item._id)}
+                        >
+                            <Text
                                 style={
-                                    {
-                                        padding:10,
-                                        marginHorizontal: 3,
-                                        backgroundColor: '#9999',
-                                        borderRadius: 10,
-                                    }
+                                    [
+                                        styles.userButtonText,
+                                        userSelected === item._id && { color: 'white' }
+                                    ]
                                 }
                             >
-                                <Text>
-                                    {item?.name}
-                                </Text>
-                            </Pressable>
-                        )}
-                        contentContainerStyle={{ padding: 10 }}
-                    />
+                                {item?.name}
+                            </Text>
+                        </Pressable>
+                    )}
+                />
             </View>
 
             <View style={styles.stationsContainer}>
@@ -145,11 +151,11 @@ export default function CreateAppointmentToday() {
             {/* Submit container */}
             <View style={styles.submitContainer}>
                 <Pressable style={styles.submitButton}
+                    onPress={() => alert('User: ' + userSelected + 'station' + selectedStation)}
                 >
                     <Text style={styles.submitButtonText}>Reservar Cita</Text>
                 </Pressable>
             </View>
-
         </View>
     )
 }
@@ -173,8 +179,19 @@ const styles = StyleSheet.create({
         color: '#007bff',
     },
     userContainer: {
-        marginBottom: 20,
         alignItems: 'center',
+    },
+    userButton: {
+        padding: 10,
+        marginHorizontal: 3,
+        backgroundColor: '#9999',
+        borderRadius: 8,
+
+    },
+    userButtonText: {
+        color: '#333',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     stationsContainer: {
         marginBottom: 20,
