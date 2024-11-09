@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Home = () => {
     const router = useRouter();
-
     const clearSession = async () => {
         try {
             await AsyncStorage.removeItem('@session_key');
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     logoutButton: {
-        margin: 10,   
+        margin: 10,
         alignSelf: 'flex-end',
         backgroundColor: '#888',
         padding: 5,
