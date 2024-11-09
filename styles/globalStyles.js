@@ -30,10 +30,10 @@ export const globalStyles = StyleSheet.create({
         color: '#333',
     },
     button: {
-        margin: 10,
+        marginVertical: 10,
         padding: 10,
         backgroundColor: '#007bff',
-        borderRadius: 5,
+        borderRadius: 8,
         alignItems: 'center',
     },
     buttonText: {
@@ -41,10 +41,9 @@ export const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input: {
-        width: Platform.OS === 'web' ? 400 : '80%',
+        width: Platform.OS === 'web' ? 500 : '',
         height: 40,
         borderColor: '#ccc',
-        borderWidth: 1,
         borderRadius: 5,
         padding: 10,
         marginVertical: 10,
