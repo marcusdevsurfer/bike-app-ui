@@ -1,17 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
 import { useRouter } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
-import { globalStyles, getInsets } from '../styles/globalStyles';
-
+import { getInsets } from '../styles/globalStyles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Home = () => {
     const router = useRouter();
+
+    const clearSession = async () => {
+        try {
+            await AsyncStorage.removeItem('@session_key');
+            router.push('/auth'); // Redirigir al usuario a la pantalla de inicio de sesión
+        } catch (e) {
+            console.error('Failed to clear session.', e);
+        }
+    };
+
     return (
         <View style={[styles.container, getInsets()]}>
             <View style={styles.header}>
-                <MaterialIcons style={styles.logo} name="pedal-bike" size={Platform.OS === 'web' ? 100 : 50} color="#007bff" />
+                <Pressable
+                    onPress={clearSession}
+                    style={styles.logoutButton}
+                >
+                    <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+                </Pressable>
 
+                <MaterialIcons style={styles.logo} name="pedal-bike" size={Platform.OS === 'web' ? 100 : 50} color="#007bff" />
                 <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
             </View>
             <View style={styles.dashboard}>
@@ -51,6 +67,7 @@ export const Home = () => {
                     <Text style={styles.cardText}>Crear cita para hoy</Text>
                 </Pressable>
             </View>
+
             <View style={styles.footer}>
                 <Text style={styles.footerText}>© 2024 Bike App. Todos los derechos reservados.</Text>
             </View>
@@ -64,6 +81,17 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#f8f9fa',
         justifyContent: 'space-between',
+    },
+    logoutButton: {
+        margin: 10,   
+        alignSelf: 'flex-end',
+        backgroundColor: '#888',
+        padding: 5,
+        borderRadius: 5,
+    },
+    logoutButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
     },
     header: {
         alignItems: 'center',
