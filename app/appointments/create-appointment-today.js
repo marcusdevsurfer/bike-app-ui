@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, FlatList, Pressable, TextInput } from 'react-native'
+import { Text, View, StyleSheet, FlatList, Pressable, TextInput, Alert } from 'react-native'
 import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
@@ -51,6 +51,40 @@ export default function CreateAppointmentToday() {
         catch (error) {
             console.error(error);
         }
+    }
+
+    const createAppointment = async () => {
+        if (!userSelected || !selectedStation || !bikeSelected) {
+            Alert.alert('Error', 'Por favor selecciona un usuario, estación y bicicleta para poder reservar una cita.');
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/rentals`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: userSelected,
+                    bike: bikeSelected,
+                    stationStart: selectedStation,
+                    rentalStartTime: new Date(),
+                })
+            });
+            const data = await response.json();
+            clearSelections();
+            Alert.alert('Cita Reservada', 'Tu cita ha sido reservada exitosamente.');
+            console.log(data);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const clearSelections = () => {
+        setSelectedStation(null);
+        setUserSelected(null);
+        setBikeSelected(null);
     }
 
     const filterBikes = (stationId) => {
@@ -162,7 +196,7 @@ export default function CreateAppointmentToday() {
             {/* Submit container */}
             <View style={styles.submitContainer}>
                 <Pressable style={styles.submitButton}
-                    onPress={() => alert('user: ' + userSelected + '\nstation: ' + selectedStation + '\nbike: ' + bikeSelected)}
+                    onPress={createAppointment}
                 >
                     <Text style={styles.submitButtonText}>Reservar Cita</Text>
                 </Pressable>
