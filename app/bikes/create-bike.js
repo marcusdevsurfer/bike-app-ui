@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
 import { globalStyles } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
+import { fetchAndSetStations } from '../misc/api';
 import { API_URL } from '@env';
 
 export default function CreateBike() {
@@ -16,18 +17,8 @@ export default function CreateBike() {
     const [stations, setStations] = useState([]);
 
     useEffect(() => {
-        fetchStations();
+        fetchAndSetStations(setStations);
     }, []);
-
-    const fetchStations = async () => {
-        try {
-            const response = await fetch(`${API_URL}/stations`);
-            const data = await response.json();
-            setStations(data);
-        } catch (error) {
-            console.error('Error fetching stations:', error);
-        }
-    }
 
     const isFormValid = () => {
         return serialState.trim() !== '' && modelState.trim() !== '' && selectedStation !== null;
