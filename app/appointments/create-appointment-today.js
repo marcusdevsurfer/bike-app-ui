@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, FlatList, Pressable, TextInput, Alert } from 'r
 import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
+import { fetchAndSetUsers, fetchAndSetStations, fetchAndSetBikes } from '../misc/api';
 
 export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
@@ -15,43 +16,10 @@ export default function CreateAppointmentToday() {
     const [inputUserName, setInputUserName] = useState('');
 
     useEffect(() => {
-        fetchUsers();
-        fetchStations();
-        fetchBikes();
+        fetchAndSetUsers(setUsers);
+        fetchAndSetStations(setStations)
+        fetchAndSetBikes(setBikes);
     }, []);
-
-    const fetchStations = async () => {
-        try {
-            const response = await fetch(`${API_URL}/stations`)
-            const data = await response.json();
-            setStations(data);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch(`${API_URL}/users`)
-            const data = await response.json();
-            setUsers(data);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-
-    const fetchBikes = async () => {
-        try {
-            const response = await fetch(`${API_URL}/bikes`)
-            const data = await response.json();
-            setBikes(data);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
 
     const createAppointment = async () => {
         if (!userSelected || !selectedStation || !bikeSelected) {
