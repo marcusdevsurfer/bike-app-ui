@@ -10,10 +10,10 @@ export const HeaderNavigation = () => {
         <View style={styles.headerContainer}>
             <TouchableOpacity
                 style={styles.backButton}
-                onPress={() => router.push('/')}
+                onPress={() => router.back()}
             >
                 <MaterialIcons name="arrow-back" size={24} color="#007bff" />
-                <Text style={styles.backButtonText}>Inicio</Text>
+                <Text style={styles.backButtonText}></Text>
             </TouchableOpacity>
         </View>
 
@@ -22,8 +22,7 @@ export const HeaderNavigation = () => {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        width: '100%',
-        padding: 10,
+        padding: 20,
     },
     backButton: {
         flexDirection: 'row',
