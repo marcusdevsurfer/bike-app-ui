@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text, TextInput, Platform, ActivityIndicator, Pressable } from "react-native";
-import { API_URL } from '@env';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BikeItem } from "../../components/BikeItem";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { router } from "expo-router";
+import { API_URL } from '@env';
 
 const HeaderContainer = () => {
     return (

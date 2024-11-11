@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, Platform } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import { API_URL } from '@env';
 import { HeaderNavigation } from "../app/components/HeaderNavigation";
 import { globalStyles, getInsets } from "../styles/globalStyles";
-
+import { API_URL } from '@env';
 
 const AppointmentItem = ({ appointment }) => (
     <View style={styles.itemContainer}>

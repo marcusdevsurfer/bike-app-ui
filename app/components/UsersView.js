@@ -3,8 +3,9 @@ import { Text, View, StyleSheet, TextInput, FlatList, ActivityIndicator, Platfor
 import { HeaderNavigation } from './HeaderNavigation'
 import { getInsets, globalStyles } from '../../styles/globalStyles'
 import { MaterialIcons } from '@expo/vector-icons';
-import { API_URL } from '@env';
 import { UserCard } from './UserCard';
+import { API_URL } from '@env';
+
 
 export const UsersView = () => {
   //input find bar state
@@ -62,7 +63,7 @@ export const UsersView = () => {
           :
           <FlatList
             data={users.filter(user => user.name.toLowerCase().includes(input.toLowerCase()))}
-            renderItem={({ item }) => (<UserCard user={item} />)} 
+            renderItem={({ item }) => (<UserCard user={item} />)}
             contentContainerStyle={styles.flatContent}
           />
       }

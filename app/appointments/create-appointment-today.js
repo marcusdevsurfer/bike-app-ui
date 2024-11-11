@@ -22,7 +22,7 @@ export default function CreateAppointmentToday() {
 
     const fetchStations = async () => {
         try {
-            const response = await fetch(`${API_URL}/stations/`)
+            const response = await fetch(`${API_URL}/stations`)
             const data = await response.json();
             setStations(data);
         }
@@ -33,7 +33,7 @@ export default function CreateAppointmentToday() {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch(`${API_URL}/users/`)
+            const response = await fetch(`${API_URL}/users`)
             const data = await response.json();
             setUsers(data);
         }
@@ -44,7 +44,7 @@ export default function CreateAppointmentToday() {
 
     const fetchBikes = async () => {
         try {
-            const response = await fetch(`${API_URL}/bikes/`)
+            const response = await fetch(`${API_URL}/bikes`)
             const data = await response.json();
             setBikes(data);
         }
@@ -179,14 +179,15 @@ const styles = StyleSheet.create({
         color: '#007bff',
     },
     userContainer: {
+        justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     userButton: {
         padding: 10,
         marginHorizontal: 3,
         backgroundColor: '#9999',
         borderRadius: 8,
-
     },
     userButtonText: {
         color: '#333',

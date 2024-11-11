@@ -41,7 +41,7 @@ export const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input: {
-        width: Platform.OS === 'web' ? 500 : '',
+        width: Platform.OS === 'web' ? '80%' : '100%',
         height: 40,
         borderColor: '#ccc',
         borderRadius: 5,
