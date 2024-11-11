@@ -11,6 +11,7 @@ export default function CreateAppointmentToday() {
     const [filteredBikes, setFilteredBikes] = useState([]);
     const [selectedStation, setSelectedStation] = useState(null);
     const [userSelected, setUserSelected] = useState(null);
+    const [bikeSelected, setBikeSelected] = useState(null);
     const [inputUserName, setInputUserName] = useState('');
 
     useEffect(() => {
@@ -69,7 +70,6 @@ export default function CreateAppointmentToday() {
                 <Text style={styles.dateValue}>{new Date().toLocaleDateString()}</Text>
             </View>
 
-            {/* User container */}
             <View style={styles.userContainer}>
                 <TextInput onChangeText={setInputUserName} placeholder='Escribe tu nombre' style={[globalStyles.input, { marginBottom: 20 }]}></TextInput>
                 <FlatList
@@ -129,20 +129,32 @@ export default function CreateAppointmentToday() {
                     contentContainerStyle={{ margin: 10 }}
                 />
             </View>
+
             <View style={styles.bikesContainer}>
                 <Text style={styles.dateText}>Escoge Bicicleta:</Text>
                 {
                     <FlatList
                         data={filteredBikes}
                         keyExtractor={bike => bike._id}
+                        horizontal={true}
                         renderItem={({ item }) => (
-                            <Pressable>
-                                <Text>
+                            <Pressable
+                                style={[
+                                    styles.bikeButton, bikeSelected === item._id && styles.selectedBikeButton
+                                ]}
+                                onPress={() => setBikeSelected(item._id)}
+                            >
+                                <Text
+                                    style={[
+                                        styles.bikeButtonText,
+                                        bikeSelected === item._id && styles.selectedBikeButtonText
+                                    ]}
+                                >
                                     {item?.serialNumber}
                                 </Text>
                             </Pressable>
                         )}
-                        contentContainerStyle={{ padding: 10 }}
+                        contentContainerStyle={{ margin: 10 }}
                     />
                 }
             </View>
@@ -150,7 +162,7 @@ export default function CreateAppointmentToday() {
             {/* Submit container */}
             <View style={styles.submitContainer}>
                 <Pressable style={styles.submitButton}
-                    onPress={() => alert('User: ' + userSelected + 'station' + selectedStation)}
+                    onPress={() => alert('user: ' + userSelected + '\nstation: ' + selectedStation + '\nbike: ' + bikeSelected)}
                 >
                     <Text style={styles.submitButtonText}>Reservar Cita</Text>
                 </Pressable>
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
 
     dateContainer: {
         marginBottom: 10,
-        alignItems: 'center',   
+        alignItems: 'center',
     },
     dateText: {
         fontSize: 18,
@@ -194,8 +206,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+
     stationsContainer: {
-        marginBottom: 20,
+        marginBottom: 10,
         alignItems: 'center',
     },
     stationButton: {
@@ -215,10 +228,30 @@ const styles = StyleSheet.create({
     selectedStationButtonText: {
         color: '#fff',
     },
+
     bikesContainer: {
-        marginBottom: 20,
+        padding: 10,
+        justifyContent: 'center',
         alignItems: 'center',
     },
+    bikeButton: {
+        padding: 10,
+        marginHorizontal: 3,
+        backgroundColor: '#9999',
+        borderRadius: 8,
+    },
+    bikeButtonText: {
+        color: '#333',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    selectedBikeButton: {
+        backgroundColor: '#666',
+    },
+    selectedBikeButtonText: {
+        color: '#fff',
+    },
+
     submitContainer: {
         flex: 1,
         justifyContent: 'flex-end',
