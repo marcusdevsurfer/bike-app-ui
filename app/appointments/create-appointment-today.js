@@ -13,7 +13,6 @@ export default function CreateAppointmentToday() {
     const [userSelected, setUserSelected] = useState(null);
     const [inputUserName, setInputUserName] = useState('');
 
-
     useEffect(() => {
         fetchUsers();
         fetchStations();
@@ -131,7 +130,7 @@ export default function CreateAppointmentToday() {
                 />
             </View>
             <View style={styles.bikesContainer}>
-                <Text style={styles.dateText}>Bicicletas:</Text>
+                <Text style={styles.dateText}>Escoge Bicicleta:</Text>
                 {
                     <FlatList
                         data={filteredBikes}
@@ -163,11 +162,12 @@ export default function CreateAppointmentToday() {
 const styles = StyleSheet.create({
     sectionContainer: {
         alignItems: 'center',
-        padding: 20,
+        marginBottom: 10,
     },
+
     dateContainer: {
-        marginBottom: 20,
-        alignItems: 'center',
+        marginBottom: 10,
+        alignItems: 'center',   
     },
     dateText: {
         fontSize: 18,
@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
         color: '#007bff',
     },
     userContainer: {
+        padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
     },
     userButton: {
         padding: 10,
@@ -220,8 +220,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     submitContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginBottom: 20,
+        marginVertical: 10,
     },
     submitButton: {
         padding: 15,
