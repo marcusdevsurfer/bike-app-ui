@@ -6,6 +6,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { fetchAndSetStations } from '../misc/api';
 import { API_URL } from '@env';
+import { showAlert } from '../misc/util';
 
 export default function CreateBike() {
     const router = useRouter();
@@ -32,7 +33,7 @@ export default function CreateBike() {
             station: selectedStation,
         }
         if (!isFormValid()) {
-            Alert.alert('Error', 'Todos los campos son requeridos');
+            showAlert('Error','Todos los campos son requeridos');
             return;
         }
         try {
@@ -44,10 +45,12 @@ export default function CreateBike() {
                 body: JSON.stringify(bike),
             });
             if (response.status !== 201) {
+                showAlert('Error', 'Error añadiendo bicicleta');
+                clearForm();
                 throw new Error('Error adding bike');
+                
             }
-            Alert.alert('Bicicleta añadida', 'Bicicleta añadida correctamente');
-            console.log('Bike added:', bike);
+            showAlert('Exito', 'Bicicleta añadida');
             clearForm();
             router.push('/bikes');
         } catch (error) {
