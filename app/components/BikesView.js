@@ -5,7 +5,6 @@ import { BikeItem } from "../../components/BikeItem";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { router } from "expo-router";
-import { API_URL } from '@env';
 import { fetchAndSetBikes } from "../misc/api";
 
 const HeaderContainer = () => {
@@ -19,18 +18,17 @@ const HeaderContainer = () => {
 
 const FindBar = ({ value, setValue }) => {
     return (
-        <View style={styles.actionsContainer}>
-            <View style={styles.searchContainer}>
-                <MaterialIcons name="search" size={24} color="#666" style={styles.searchIcon} />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Buscar bicicleta"
-                    placeholderTextColor="#666"
-                    value={value}
-                    onChangeText={setValue}
-                />
-            </View>
+        <View style={styles.searchContainer}>
+            <MaterialIcons name="search" size={24} color="#666" style={styles.searchIcon} />
+            <TextInput
+                style={styles.input}
+                placeholder="Buscar bicicleta"
+                placeholderTextColor="#666"
+                value={value}
+                onChangeText={setValue}
+            />
         </View>
+
     );
 }
 
@@ -47,16 +45,13 @@ export const BikesView = () => {
     return (
         <View style={[getInsets(), globalStyles.container]}>
             <HeaderNavigation />
-            <HeaderContainer />
             <Pressable
                 onPress={() => router.push('/bikes/create-bike')}
-                style={[globalStyles.button, {
-                    alignSelf: 'flex-end',
-                }]}>
+                style={styles.button}>
                 <Text style={globalStyles.buttonText}>Nuevo</Text>
             </Pressable>
+            <HeaderContainer />
             <FindBar value={inputValue} setValue={setInputValue} />
-
             {
                 isLoading
                     ?
@@ -77,24 +72,24 @@ export const BikesView = () => {
 }
 
 const styles = StyleSheet.create({
+    button: {
+        padding: 5,
+        borderRadius: 8,
+        alignSelf: 'flex-end',
+        marginHorizontal: 10,
+        backgroundColor: '#007bff',
+    },
     headerContainer: {
         textAlign: 'justify',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    actionsContainer: {
-        margin: 10,
-        padding: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        borderRadius: 5,
+        marginBottom: 20
     },
     searchContainer: {
-        flex: 1,
-        padding: 10,
-        margin: 10,
+        width: '80%',
+        marginHorizontal: 'auto',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#f8f9fa',
@@ -112,27 +107,13 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        height: 40,
+        height: 30,
         fontSize: 16,
-
     },
     flatContainer: {
-        padding: 10,
+        padding: 5,
         justifyContent: 'center',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
-    },
-    button: {
-        backgroundColor: '#007bff',
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 25,
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        marginLeft: 5,
     },
 });
