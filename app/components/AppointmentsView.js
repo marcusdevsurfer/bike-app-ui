@@ -42,7 +42,11 @@ export default function AppointmentsView() {
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
-            <Text style={globalStyles.title}>Citas Registradas</Text>
+            <View style={styles.sectionContainer }>
+                <Text style={globalStyles.title}>Citas Registradas</Text>
+                <Text style={globalStyles.subtitle}>Estas son las citas registradas para el dia de hoy.</Text>
+            </View>
+
             {
                 loading ? <ActivityIndicator size="large" color="#007bff" /> :
                     rentals.length > 0 ? (
@@ -65,6 +69,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#007bff',
     },
+    sectionContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
     itemContainer: {
         padding: 20,
         margin: 10,
@@ -77,9 +85,10 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     listContent: {
-        flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-        flexWrap: Platform.OS === 'web' ? 'wrap' : 'no-wrap',
+        padding: 5,
         justifyContent: 'center',
+        flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+        flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     },
     itemHeader: {
         flexDirection: 'row',
