@@ -5,6 +5,7 @@ import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
 import { fetchAndSetUsers, fetchAndSetStations, fetchAndSetBikes } from '../misc/api';
 import { FindBar } from '../components/FindBar';
+import { showAlert } from '../misc/util';
 
 export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
@@ -24,7 +25,7 @@ export default function CreateAppointmentToday() {
 
     const createAppointment = async () => {
         if (!userSelected || !selectedStation || !bikeSelected) {
-            Alert.alert('Error', 'Por favor selecciona un usuario, estación y bicicleta para poder reservar una cita.');
+            showAlert('Error', 'Por favor selecciona un usuario, estación y bicicleta.');
             return;
         }
         try {
