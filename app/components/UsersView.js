@@ -6,7 +6,6 @@ import { getInsets, globalStyles } from '../../styles/globalStyles'
 import { UserCard } from './UserCard';
 import { fetchAndSetUsers } from '../misc/api'
 
-
 export const UsersView = () => {
   const [input, setInput] = useState('')
   const [users, setUsers] = useState([])
@@ -17,16 +16,14 @@ export const UsersView = () => {
     setLoading(false)
   }, [])
 
-
   return (
     <View style={[getInsets(), globalStyles.container]}>
       <HeaderNavigation />
-      {/* Header */}
       <View style={styles.headerContainer}>
         <Text style={globalStyles.title}>Usuarios Registrados</Text>
         <Text style={globalStyles.subtitle}>Aqui se muestran los usuarios registrados en la aplicacion.</Text>
       </View>
-      <FindBar value={input} setValue={setInput} />
+      <FindBar placeholder={'Introduzca el nombre del usuario'} value={input} setValue={setInput} />
       {
         loading ?
           <ActivityIndicator
@@ -49,15 +46,14 @@ export const UsersView = () => {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   flatContent: {
+    padding: 5,
+    justifyContent: 'center',
     flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-    alignItems: Platform.OS === 'web' ? 'start' : 'center',
-    justifyContent: Platform.OS === 'web' ? 'center' : 'flex-start',
     flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
-    margin: 10,
-    padding: 10
   }
 })
