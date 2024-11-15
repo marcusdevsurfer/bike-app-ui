@@ -4,6 +4,7 @@ import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
 import { fetchAndSetUsers, fetchAndSetStations, fetchAndSetBikes } from '../misc/api';
+import { FindBar } from '../components/FindBar';
 
 export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
@@ -73,9 +74,9 @@ export default function CreateAppointmentToday() {
             </View>
 
             <View style={styles.userContainer}>
-                <TextInput onChangeText={setInputUserName} placeholder='Escribe tu nombre' style={[globalStyles.input, { marginBottom: 20 }]}></TextInput>
+                <FindBar value={inputUserName} setValue={setInputUserName} />
                 <FlatList
-                    style={{ marginBottom: 20 }}
+                    style={{ marginVertical: 10 }}
                     data={users.filter(user => inputUserName === '' ? users : user.name.toLowerCase().includes(inputUserName.toLowerCase()))}
                     keyExtractor={user => user._id}
                     horizontal={true}
@@ -176,7 +177,7 @@ export default function CreateAppointmentToday() {
 const styles = StyleSheet.create({
     sectionContainer: {
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 20,
     },
 
     dateContainer: {
