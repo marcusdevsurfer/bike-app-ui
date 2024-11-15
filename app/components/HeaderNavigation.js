@@ -4,13 +4,13 @@ import { useRouter } from "expo-router"
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
-export const HeaderNavigation = () => {
+export const HeaderNavigation = ({ path }) => {
     const router = useRouter()
     return (
         <View style={styles.headerContainer}>
             <TouchableOpacity
                 style={styles.backButton}
-                onPress={() => router.back()}
+                onPress={() => router.push(path ? path : '/')}
             >
                 <MaterialIcons name="arrow-back" size={24} color="#007bff" />
                 <Text style={styles.backButtonText}></Text>
