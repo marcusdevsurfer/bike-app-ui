@@ -1,36 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, TextInput, FlatList, ActivityIndicator, Platform } from 'react-native'
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, Platform } from 'react-native'
 import { HeaderNavigation } from './HeaderNavigation'
+import { FindBar } from './FindBar'
 import { getInsets, globalStyles } from '../../styles/globalStyles'
-import { MaterialIcons } from '@expo/vector-icons';
 import { UserCard } from './UserCard';
-import { API_URL } from '@env';
+import { fetchAndSetUsers } from '../misc/api'
 
 
 export const UsersView = () => {
-  //input find bar state
   const [input, setInput] = useState('')
-  //users state
   const [users, setUsers] = useState([])
-  // loading state
   const [loading, setLoading] = useState(true)
 
-  //fetch users on component mount
   useEffect(() => {
-    fetchUsers()
+    fetchAndSetUsers(setUsers)
+    setLoading(false)
   }, [])
 
-  //fetch users
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch(`${API_URL}/users`)
-      const data = await response.json()
-      setUsers(data)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   return (
     <View style={[getInsets(), globalStyles.container]}>
@@ -40,18 +26,8 @@ export const UsersView = () => {
         <Text style={globalStyles.title}>Usuarios Registrados</Text>
         <Text style={globalStyles.subtitle}>Aqui se muestran los usuarios registrados en la aplicacion.</Text>
       </View>
-      {/* Find Bar */}
-      <View style={styles.findBarContainer}>
-        <MaterialIcons name="search" size={24} color="#666" style={styles.searchIcon} />
-        <TextInput
-          style={globalStyles.input}
-          onChangeText={setInput}
-          value={input}
-          placeholder={'Buscar usuario'}
-        />
-      </View>
+      <FindBar value={input} setValue={setInput} />
       {
-        //if is loading show activity indicator else show flatlist
         loading ?
           <ActivityIndicator
             style={{
@@ -75,15 +51,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  findBarContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-  },
-  searchIcon: {
-    marginHorizontal: 5,
   },
   flatContent: {
     flexDirection: Platform.OS === 'web' ? 'row' : 'column',
