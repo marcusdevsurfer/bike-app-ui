@@ -6,6 +6,7 @@ import { HeaderNavigation } from "../components/HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { router } from "expo-router";
 import { API_URL } from '@env';
+import { fetchAndSetBikes } from "../misc/api";
 
 const HeaderContainer = () => {
     return (
@@ -39,19 +40,9 @@ export const BikesView = () => {
     const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
-        fetchBikes()
+        fetchAndSetBikes(setBikes)
+        setIsLoading(false)
     }, [])
-
-    const fetchBikes = async () => {
-        try {
-            const response = await fetch(`${API_URL}/bikes`)
-            const data = await response.json()
-            setBikes(data)
-            setIsLoading(false)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <View style={[getInsets(), globalStyles.container]}>
