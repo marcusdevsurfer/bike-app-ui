@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#007bff',
     },
     headerContainer: {
-        textAlign: 'justify',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20
