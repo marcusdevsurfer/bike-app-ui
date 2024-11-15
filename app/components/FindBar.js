@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-export const FindBar = ({ value, setValue }) => {
+export const FindBar = ({placeholder = 'Buscar', value, setValue }) => {
     return (
         <View style={styles.searchContainer}>
             <MaterialIcons name="search" size={24} color="#666" style={styles.searchIcon} />
             <TextInput
                 style={styles.input}
-                placeholder="Buscar bicicleta"
+                placeholder={placeholder}
                 placeholderTextColor="#666"
                 value={value}
                 onChangeText={setValue}
@@ -18,6 +18,7 @@ export const FindBar = ({ value, setValue }) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
+        marginBottom: Platform.OS === 'web' ? 20 : 10,  
         width: '80%',
         marginHorizontal: 'auto',
         paddingVertical: 10,
