@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const getInsets = () => {
@@ -9,7 +9,7 @@ export const getInsets = () => {
         paddingLeft: insets.left,
         paddingRight: insets.right,
     }
- }
+}
 export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -41,7 +41,7 @@ export const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input: {
-        width: Platform.OS === 'web' ? '80%' : '100%',
+        width: '80%',
         height: 40,
         borderColor: '#ccc',
         borderRadius: 5,
