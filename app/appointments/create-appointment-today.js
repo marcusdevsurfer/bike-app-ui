@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, FlatList, Pressable, TextInput, Alert } from 'react-native'
+import { Text, View, StyleSheet, FlatList, Pressable } from 'react-native'
 import { globalStyles, getInsets } from '../../styles/globalStyles';
 import { HeaderNavigation } from '../components/HeaderNavigation';
 import { API_URL } from '@env';
@@ -43,10 +43,10 @@ export default function CreateAppointmentToday() {
             });
             const data = await response.json();
             clearSelections();
-            Alert.alert('Cita Reservada', 'Tu cita ha sido reservada exitosamente.');
-            console.log(data);
+            showAlert('Éxito', 'Cita reservada exitosamente.'); 
         }
         catch (error) {
+            showAlert('Error', 'Ocurrió un error al reservar la cita.');
             console.error(error);
         }
     }
