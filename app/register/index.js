@@ -2,13 +2,15 @@ import React, { useState } from "react"
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { showAlert } from "../misc/util";
+import { MaterialIcons } from "@expo/vector-icons";
 const Register = () => {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
+    const [lastname, setLastname] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
 
     const validateForm = () => {
-        if (!username || !email || !password) {
+        if (!name || !lastname || !email || !password) {
             showAlert("Error", "Por favor, rellena todos los campos.");
             return false;
         }
@@ -22,30 +24,38 @@ const Register = () => {
 
     const handleRegister = () => {
         if (validateForm()) {
-            showAlert("Registro", `Usuario: ${username}, Email: ${email}, Password: ${password}`);
-            console.log("Register", { username, email, password });
+            showAlert("Registro", `Nombre: ${name} ${lastname}, Email: ${email}, Password: ${password}`);
+            console.log("Register", { name, lastname, email, password });
         }
     };
 
     return (
         <View style={[globalStyles.container, getInsets(), styles.contentCentered]}>
-            <Text style={globalStyles.title}>Register</Text>
+            <MaterialIcons name="person-add" size={60} color="#007bff" />
+            <Text style={globalStyles.title}>Registro</Text>
+            <Text style={globalStyles.subtitle}>Crea una nueva cuenta</Text>
             <TextInput
                 style={globalStyles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
+                placeholder="Nombre"
+                value={name}
+                onChangeText={setName}
             />
             <TextInput
                 style={globalStyles.input}
-                placeholder="Email"
+                placeholder="Apellidos"
+                value={lastname}
+                onChangeText={setLastname}
+            />
+            <TextInput
+                style={globalStyles.input}
+                placeholder="Correo electrónico"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
             />
             <TextInput
                 style={globalStyles.input}
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
