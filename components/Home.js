@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Platform, ScrollView } from 'react-native';
 import { useRouter } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import { getInsets, globalStyles } from '../styles/globalStyles';
@@ -49,7 +49,8 @@ export const Home = () => {
                 <MaterialIcons style={styles.logo} name="pedal-bike" size={Platform.OS === 'web' ? 100 : 50} color="#007bff" />
                 <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
             </View>
-            <View style={styles.dashboard}>
+
+            <ScrollView contentContainerStyle={styles.dashboard}>
                 <Pressable
                     style={styles.card}
                     onPress={() => router.push('/users')}
@@ -71,13 +72,6 @@ export const Home = () => {
                     <MaterialIcons name="event" size={40} color="#007bff" style={styles.cardIcon} />
                     <Text style={styles.cardText}>Citas</Text>
                 </Pressable>
-                {/* <Pressable
-                    style={styles.card}
-                    onPress={() => router.push('appointments/create-appointment')}
-                >
-                    <MaterialIcons name="add-circle" size={40} color="#007bff" style={styles.cardIcon} />
-                    <Text style={styles.cardText}>Crear cita</Text>
-                </Pressable> */}
                 <Pressable
                     style={styles.card}
                     onPress={() => router.push('appointments/create-appointment-today')}
@@ -85,8 +79,15 @@ export const Home = () => {
                     <MaterialIcons name="add-circle" size={40} color="#007bff" style={styles.cardIcon} />
                     <Text style={styles.cardText}>Crear cita para hoy</Text>
                 </Pressable>
-            </View>
-
+                <Pressable
+                    style={styles.card}
+                    onPress={() => router.push('/register')}
+                >
+                    <MaterialIcons name="person-add" size={40} color="#007bff" style={styles.cardIcon} />
+                    <Text style={styles.cardText}>Registrar usuario</Text>
+                </Pressable>
+            </ScrollView>
+            
             <View style={styles.footer}>
                 <Text style={styles.footerText}>© 2024 Bike App. Todos los derechos reservados.</Text>
             </View>
@@ -131,11 +132,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     dashboard: {
-        flex: 1,
-        flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-        flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
-        justifyContent: 'center',
-        alignItems: Platform.OS === 'web' ? 'start' : 'center',
+        flexDirection: Platform.OS === 'web' ? 'row' : '',
+        flexWrap: Platform.OS === 'web' ? 'wrap' : '',
+        justifyContent: Platform.OS === 'web' ? 'space-around' : 'center',
+        alignItems: 'center',
     },
     card: {
         width: Platform.OS === 'web' ? '22%' : '80%',
