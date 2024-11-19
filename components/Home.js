@@ -1,31 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
 import { useRouter } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
-import { getInsets } from '../styles/globalStyles';
+import { getInsets, globalStyles } from '../styles/globalStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Home = () => {
     const router = useRouter();
+    const [session, setSession] = useState('');
+
+    useEffect(() => {
+        getSession();
+    }, []);
+
     const clearSession = async () => {
         try {
             await AsyncStorage.removeItem('@session_key');
-            router.push('/auth'); // Redirigir al usuario a la pantalla de inicio de sesión
+            router.push('/auth');
         } catch (e) {
             console.error('Failed to clear session.', e);
         }
     };
 
+    const getSession = async () => {
+        try {
+            const session = await AsyncStorage.getItem('@session_key');
+            setSession(session.toString());
+        } catch (e) {
+            console.error('Failed to get session.', e);
+        }
+    }
+
+
     return (
         <View style={[styles.container, getInsets()]}>
+
             <View style={styles.header}>
+                <Text style={globalStyles.text}>{`Bienvenido: ${session} `}</Text>
                 <Pressable
                     onPress={clearSession}
                     style={styles.logoutButton}
                 >
                     <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
                 </Pressable>
+            </View>
 
+            <View style={styles.sectionHeader}>
                 <MaterialIcons style={styles.logo} name="pedal-bike" size={Platform.OS === 'web' ? 100 : 50} color="#007bff" />
                 <Text style={styles.title}>Bienvenido a la App de Bicicletas</Text>
             </View>
@@ -93,10 +113,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     header: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    sectionHeader: {
         alignItems: 'center',
         marginBottom: 20,
     },
-
     logo: {
         margin: 20,
     },
