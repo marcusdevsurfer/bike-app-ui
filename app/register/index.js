@@ -3,7 +3,12 @@ import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { showAlert } from "../misc/util";
 import { MaterialIcons } from "@expo/vector-icons";
+import {API_URL} from "@env"; 
+import { useRouter } from "expo-router";  
+
 const Register = () => {
+    const router = useRouter();
+
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [password, setPassword] = useState("");
@@ -22,12 +27,44 @@ const Register = () => {
         return true;
     };
 
+    const registerUser = async () => {
+        try {
+            const response = await fetch(`${API_URL}/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: `${name.trim()} ${lastname.trim()}`,
+                    email: email,
+                    password: password,
+                    role: 'user',
+                    phone: '00000000'
+                }),
+            });
+            if (response.ok) {
+                clearForm();
+                showAlert("Registro", "Usuario registrado correctamente");
+            }
+        } catch (error) {
+            showAlert("Error", "Error al registrar el usuario");    
+            console.error(error + "Error al registrar el usuario");
+        }
+    }
+
     const handleRegister = () => {
         if (validateForm()) {
-            showAlert("Registro", `Nombre: ${name} ${lastname}, Email: ${email}, Password: ${password}`);
-            console.log("Register", { name, lastname, email, password });
+            registerUser();
+            router.push('/auth');
         }
     };
+
+    const clearForm = () => {
+        setName("");
+        setLastname("");
+        setEmail("");
+        setPassword("");
+    }
 
     return (
         <View style={[globalStyles.container, getInsets(), styles.contentCentered]}>
