@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { useLocalSearchParams } from 'expo-router';
+import { API_URL } from "@env";
 
 const AppointmentDetails = () => {
     const { id } = useLocalSearchParams();
-    console.log(`id: ${id}`);
+
+    useEffect(() => {
+        fetch(`${API_URL}/rentals/${id}`)
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error));
+    }, [id]);
+
+
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
