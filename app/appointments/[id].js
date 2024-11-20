@@ -2,8 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
+import { useLocalSearchParams } from 'expo-router';
 
 const AppointmentDetails = () => {
+    const { id } = useLocalSearchParams();
+    console.log(`id: ${id}`);
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
