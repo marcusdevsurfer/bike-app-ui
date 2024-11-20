@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderNavigation } from "./HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { API_URL } from '@env';
+import { Link } from "expo-router";
 
 const AppointmentItem = ({ appointment }) => {
     return (
@@ -42,18 +43,20 @@ export default function AppointmentsView() {
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
-            <View style={styles.sectionContainer }>
+            <View style={styles.sectionContainer}>
                 <Text style={globalStyles.title}>Citas Registradas</Text>
                 <Text style={globalStyles.subtitle}>Estas son las citas registradas para el dia de hoy.</Text>
             </View>
-
             {
                 loading ? <ActivityIndicator size="large" color="#007bff" /> :
                     rentals.length > 0 ? (
                         <FlatList
                             data={rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString())}
                             keyExtractor={item => item._id}
-                            renderItem={({ item }) => <AppointmentItem appointment={item} />}
+                            renderItem={({ item }) =>
+                                <Link href={`/appointments/${item._id}`} style={{ textDecoration: 'none' }}>
+                                    <AppointmentItem appointment={item} />
+                                </Link>}
                             contentContainerStyle={styles.listContent}
                         />
                     ) : (
