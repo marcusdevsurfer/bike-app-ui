@@ -40,6 +40,20 @@ export const globalStyles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    grayButton: {
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: '#6c757d', // Changed to a darker gray
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    redButton: {
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: '#dc3545',
+        borderRadius: 8,
+        alignItems: 'center',
+    },
     input: {
         width: '80%',
         height: 40,
