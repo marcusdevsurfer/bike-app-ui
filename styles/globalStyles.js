@@ -22,12 +22,17 @@ export const globalStyles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 16,
-        color: '#666',
+        color: '#999', // Lighter gray color
         margin: 10,
     },
     text: {
         fontSize: 16,
         color: '#333',
+    },
+    infoText: {
+        fontSize: 18,
+        color: '#333',
+        marginVertical: 10,
     },
     button: {
         marginVertical: 10,
@@ -43,7 +48,7 @@ export const globalStyles = StyleSheet.create({
     grayButton: {
         marginVertical: 10,
         padding: 10,
-        backgroundColor: '#6c757d', // Changed to a darker gray
+        backgroundColor: '#b0b0b0', // Lighter gray color
         borderRadius: 8,
         alignItems: 'center',
     },
@@ -51,6 +56,13 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         backgroundColor: '#dc3545',
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    strongBlueButton: {
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: '#0000ff', // Strong blue color
         borderRadius: 8,
         alignItems: 'center',
     },
