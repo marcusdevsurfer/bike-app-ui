@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { useLocalSearchParams } from 'expo-router';
 import { API_URL } from "@env";
 
 const AppointmentDetails = () => {
+
     const { id } = useLocalSearchParams();
     const [appointment, setAppointment] = useState(null);
     const [user, setUser] = useState(null);
     const [bike, setBike] = useState(null);
-    const [station, setStation] = useState(null);   
+    const [station, setStation] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,16 +63,16 @@ const AppointmentDetails = () => {
         }
     }
 
-    const fetchStation = async (id) => {   
+    const fetchStation = async (id) => {
         try {
             const response = await fetch(`${API_URL}/stations/${id}`);
             const json = await response.json();
             return json;
         } catch (error) {
             console.error(error);
-        }   
+        }
 
-     };
+    };
 
     return (
         <View style={[globalStyles.container, getInsets()]}>
@@ -80,19 +81,31 @@ const AppointmentDetails = () => {
                 <Text style={globalStyles.title}>Detalles de la cita</Text>
                 <Text style={globalStyles.subtitle}>Revisa los detalles de la cita que has programado.</Text>
             </View>
-            <ScrollView contentContainerStyle={styles.detailsContainer}>
-                {
-                    appointment && user && bike && station ? (
-                        <View style={styles.infoContainer}>
-                            <Text style={styles.infoText}>{`Nombre de usuario: ${user?.name}`}</Text>
-                            <Text style={styles.infoText}>{`Bicicleta: ${bike?.serialNumber}`}</Text>
-                            <Text style={styles.infoText}>{`Estacion: ${station?.name}`}</Text>
-                        </View>
-                    ) : (
-                        <Text style={styles.loadingText}>Cargando...</Text>
-                    )
-                }
-            </ScrollView>
+            {
+                appointment && user && bike && station ? (
+                    <View style={styles.infoContainer}>
+                        <Text style={styles.infoText}>{`Usuario: ${user?.name}`}</Text>
+                        <Text style={styles.infoText}>{`Bicicleta: ${bike?.serialNumber}`}</Text>
+                        <Text style={styles.infoText}>{`Estacion: ${station?.name}`}</Text>
+                    </View>
+                ) : (
+                    <Text style={styles.loadingText}>Cargando...</Text>
+                )
+            }
+
+            <View style={styles.actionsContainer}>
+                <Pressable style={[globalStyles.grayButton,{marginHorizontal: 10}]}>
+                    <Text style={globalStyles.buttonText}>
+                        Editar cita
+                    </Text>
+                </Pressable>
+                <Pressable style={[globalStyles.redButton, {marginHorizontal: 10}]}>
+                    <Text style={globalStyles.buttonText}>
+                        Cancelar cita
+                    </Text>
+                </Pressable>
+
+            </View>
         </View>
     );
 }
@@ -102,12 +115,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10
     },
-    detailsContainer: {
-        justifyContent: 'center',   
-        alignItems: 'center',
-
-    },
-
     infoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -115,7 +122,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
-        width: '90%',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -127,7 +133,13 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 5,
     },
+    actionsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     loadingText: {
+        textAlign: 'center',
         fontSize: 18,
         color: '#999',
     },
