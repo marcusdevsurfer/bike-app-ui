@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
+import { useRouter } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import { API_URL } from "@env";
 import { MaterialIcons } from '@expo/vector-icons';
+import { showAlert } from "../misc/util";
+import { fetchUser, fetchRental, fetchBike, fetchStation } from "../misc/api";
 
 const AppointmentDetails = () => {
-
+    const router = useRouter();
     const { id } = useLocalSearchParams();
     const [appointment, setAppointment] = useState(null);
     const [user, setUser] = useState(null);
@@ -19,11 +22,11 @@ const AppointmentDetails = () => {
             try {
                 const rental = await fetchRental(id);
                 setAppointment(rental);
-                const user = await fetchUser(rental.user);
+                const user = await fetchUser(rental?.user);
                 setUser(user);
-                const bike = await fetchBike(rental.bike);
+                const bike = await fetchBike(rental?.bike);
                 setBike(bike);
-                const station = await fetchStation(rental.stationStart);
+                const station = await fetchStation(rental?.stationStart);
                 setStation(station);
             } catch (error) {
                 console.error(error);
@@ -32,47 +35,17 @@ const AppointmentDetails = () => {
         fetchData();
     }, [id]);
 
-
-    const fetchRental = async (id) => {
+    const deleteRental = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/rentals/${id}`);
+            const response = await fetch(`${API_URL}/rentals/${id}`, {
+                method: 'DELETE',
+            });
             const json = await response.json();
-            return json;
+            showAlert('Cita cancelada', 'La cita ha sido cancelada correctamente.');
+            router.replace('/appointments');
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const fetchUser = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/users/${id}`);
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            console.error(error + "Error en fetchUser");
-
-        }
-    };
-
-    const fetchBike = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/bikes/${id}`);
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const fetchStation = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/stations/${id}`);
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            console.error(error);
-        }
-
     };
 
     return (
@@ -104,7 +77,10 @@ const AppointmentDetails = () => {
                         Editar cita
                     </Text>
                 </Pressable>
-                <Pressable style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}>
+                <Pressable
+                    style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}
+                    onPress={() => deleteRental(id)}
+                >
                     <Text style={globalStyles.buttonText}>
                         Cancelar cita
                     </Text>
@@ -133,11 +109,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 3,
     },
-    infoText: {
-        fontSize: 16,
-        color: '#333',
-        marginBottom: 5,
-    },
     actionsContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -149,6 +120,5 @@ const styles = StyleSheet.create({
         color: '#999',
     },
 });
-
 
 export default AppointmentDetails;
