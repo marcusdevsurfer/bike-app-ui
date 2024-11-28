@@ -4,6 +4,7 @@ import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { useLocalSearchParams } from 'expo-router';
 import { API_URL } from "@env";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const AppointmentDetails = () => {
 
@@ -84,27 +85,30 @@ const AppointmentDetails = () => {
             {
                 appointment && user && bike && station ? (
                     <View style={styles.infoContainer}>
-                        <Text style={styles.infoText}>{`Usuario: ${user?.name}`}</Text>
-                        <Text style={styles.infoText}>{`Bicicleta: ${bike?.serialNumber}`}</Text>
-                        <Text style={styles.infoText}>{`Estacion: ${station?.name}`}</Text>
+                        <MaterialIcons name="date-range" size={24} color="gray" />
+                        <Text style={globalStyles.subtitle}>{new Date(appointment?.rentalStartTime).toLocaleDateString()}</Text>
+                        <MaterialIcons name="person" size={24} color="gray" />
+                        <Text style={globalStyles.subtitle}>{user?.name}</Text>
+                        <MaterialIcons name="directions-bike" size={24} color="gray" />
+                        <Text style={globalStyles.subtitle}>{bike?.serialNumber}</Text>
+                        <MaterialIcons name="location-on" size={24} color="gray" />
+                        <Text style={globalStyles.subtitle}>{station?.name}</Text>
                     </View>
                 ) : (
                     <Text style={styles.loadingText}>Cargando...</Text>
                 )
             }
-
             <View style={styles.actionsContainer}>
-                <Pressable style={[globalStyles.grayButton,{marginHorizontal: 10}]}>
+                <Pressable style={[globalStyles.grayButton, { marginHorizontal: 10 }]}>
                     <Text style={globalStyles.buttonText}>
                         Editar cita
                     </Text>
                 </Pressable>
-                <Pressable style={[globalStyles.redButton, {marginHorizontal: 10}]}>
+                <Pressable style={[globalStyles.redButton, { marginHorizontal: 10 }]}>
                     <Text style={globalStyles.buttonText}>
                         Cancelar cita
                     </Text>
                 </Pressable>
-
             </View>
         </View>
     );
@@ -119,6 +123,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 20,
+        marginHorizontal: 20,
         padding: 10,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
