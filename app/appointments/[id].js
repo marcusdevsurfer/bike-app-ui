@@ -85,14 +85,14 @@ const AppointmentDetails = () => {
             {
                 appointment && user && bike && station ? (
                     <View style={styles.infoContainer}>
-                        <MaterialIcons name="date-range" size={24} color="gray" />
-                        <Text style={globalStyles.subtitle}>{new Date(appointment?.rentalStartTime).toLocaleDateString()}</Text>
-                        <MaterialIcons name="person" size={24} color="gray" />
-                        <Text style={globalStyles.subtitle}>{user?.name}</Text>
-                        <MaterialIcons name="directions-bike" size={24} color="gray" />
-                        <Text style={globalStyles.subtitle}>{bike?.serialNumber}</Text>
-                        <MaterialIcons name="location-on" size={24} color="gray" />
-                        <Text style={globalStyles.subtitle}>{station?.name}</Text>
+                        <MaterialIcons name="date-range" size={24} color="#007bff" />
+                        <Text style={globalStyles.infoText}>{new Date(appointment?.rentalStartTime).toLocaleDateString()}</Text>
+                        <MaterialIcons name="person" size={24} color="#007bff" />
+                        <Text style={globalStyles.infoText}>{user?.name}</Text>
+                        <MaterialIcons name="directions-bike" size={24} color="#007bff" />
+                        <Text style={globalStyles.infoText}>{bike?.serialNumber}</Text>
+                        <MaterialIcons name="location-on" size={24} color="#007bff" />
+                        <Text style={globalStyles.infoText}>{station?.name}</Text>
                     </View>
                 ) : (
                     <Text style={styles.loadingText}>Cargando...</Text>
@@ -104,7 +104,7 @@ const AppointmentDetails = () => {
                         Editar cita
                     </Text>
                 </Pressable>
-                <Pressable style={[globalStyles.redButton, { marginHorizontal: 10 }]}>
+                <Pressable style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}>
                     <Text style={globalStyles.buttonText}>
                         Cancelar cita
                     </Text>
