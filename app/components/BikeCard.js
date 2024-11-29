@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { fetchStation } from '../misc/api';
 
 export const BikeCard = ({ bike }) => {
+    const [station, setStation] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const stationData = await fetchStation(bike?.station);
+                setStation(stationData);
+                setIsLoading(false);
+            }catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData();
+    }, []);
+
     return (
         <Link href={`/bikes/${bike._id}`}>
             <View key={bike._id} style={styles.bikeItemContainer}>
@@ -23,8 +40,7 @@ export const BikeCard = ({ bike }) => {
                 <View style={styles.bikeItemLocationContainer}>
                     <View style={styles.infoRow}>
                         <MaterialIcons name="location-on" size={20} color="#007bff" style={styles.icon} />
-                        <Text style={styles.label}>Estación:</Text>
-                        <Text style={styles.value}>{bike?.station.name}</Text>
+                        {!isLoading && <Text style={styles.value}>{station?.name}</Text>}
                     </View>
                 </View>
             </View>
