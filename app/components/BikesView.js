@@ -11,7 +11,7 @@ const HeaderContainer = () => {
     return (
         <View style={styles.headerContainer}>
             <Text style={globalStyles.title}>Registro de Bicicletas</Text>
-            <Text style={globalStyles.subtitle}>Aqui se muestran los usuarios registrados en la aplicacion.</Text>
+            <Text style={globalStyles.subtitle}>Aqui se muestran las bicicletas registradas en la aplicacion.</Text>
         </View>
     );
 }
