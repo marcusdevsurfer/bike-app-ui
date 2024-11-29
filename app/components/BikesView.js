@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, Platform, ActivityIndicator, Pressable } from "react-native";
+import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import BikeCard from "./BikeCard";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { FindBar } from "../components/FindBar";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { router } from "expo-router";
 import { fetchAndSetBikes } from "../misc/api";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 const HeaderContainer = () => {
     return (
@@ -39,9 +40,7 @@ export const BikesView = () => {
             {
                 isLoading
                     ?
-                    <ActivityIndicator
-                        size="large"
-                        color="#007bff" />
+                    <LoadingSpinner />  
                     :
                     <FlatList
                         data={bikes.filter((bike) => bike.serialNumber.includes(inputValue))}
