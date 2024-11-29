@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { fetchStation } from '../misc/api';
+import { showStatus } from '../misc/util';
 
 export const BikeCard = ({ bike }) => {
     const [station, setStation] = useState(null);
@@ -15,7 +16,7 @@ export const BikeCard = ({ bike }) => {
                 const stationData = await fetchStation(bike?.station);
                 setStation(stationData);
                 setIsLoading(false);
-            }catch (error) {
+            } catch (error) {
                 console.error(error);
             }
         }
@@ -27,21 +28,22 @@ export const BikeCard = ({ bike }) => {
             <View key={bike._id} style={styles.bikeItemContainer}>
                 <View style={styles.bikeItemInformationContainer}>
                     <View style={styles.infoRow}>
-                        <MaterialIcons name="confirmation-number" size={20} color="#007bff" style={styles.icon} />
+                        <MaterialIcons name="pedal-bike" size={25} color="#007bff" style={styles.icon} />
                         <Text style={styles.label}>Biclicleta:</Text>
                         <Text style={styles.value}>{bike?.serialNumber}</Text>
                     </View>
                     <View style={styles.infoRow}>
-                        <MaterialIcons name="info" size={20} color="#007bff" style={styles.icon} />
+                        <MaterialIcons name="info" size={25} color="#007bff" style={styles.icon} />
                         <Text style={styles.label}>Estado:</Text>
-                        <Text style={styles.value}>{bike?.status}</Text>
+                        <Text style={styles.value}>{showStatus(bike?.status)}</Text>
                     </View>
                 </View>
                 <View style={styles.bikeItemLocationContainer}>
                     <View style={styles.infoRow}>
-                        <MaterialIcons name="location-on" size={20} color="#007bff" style={styles.icon} />
+                        <MaterialIcons name="location-on" size={25} color="#007bff" style={styles.icon} />
                         {!isLoading && <Text style={styles.value}>{station?.name}</Text>}
                     </View>
+
                 </View>
             </View>
         </Link>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     bikeItemInformationContainer: {
-        marginRight: 20,
+
     },
     bikeItemLocationContainer: {
         alignItems: 'flex-end',
