@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text, Platform, ActivityIndicator, Pressable } from "react-native";
-import { BikeItem } from "../../components/BikeItem";
+import BikeCard from "./BikeCard";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { FindBar } from "../components/FindBar";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
@@ -35,7 +35,7 @@ export const BikesView = () => {
                 <Text style={globalStyles.buttonText}>Nuevo</Text>
             </Pressable>
             <HeaderContainer />
-            <FindBar value={inputValue} setValue={setInputValue} />
+            <FindBar placeholder="Ingrese el numero serial de la bicicleta" value={inputValue} setValue={setInputValue} />
             {
                 isLoading
                     ?
@@ -46,7 +46,7 @@ export const BikesView = () => {
                     <FlatList
                         data={bikes.filter((bike) => bike.serialNumber.includes(inputValue))}
                         keyExtractor={(item) => item._id}
-                        renderItem={({ item }) => <BikeItem bike={item}
+                        renderItem={({ item }) => <BikeCard bike={item}
                         />}
                         contentContainerStyle={styles.flatContainer}
                     />
@@ -57,7 +57,7 @@ export const BikesView = () => {
 
 const styles = StyleSheet.create({
     button: {
-        padding: 5,
+        padding: 10,
         borderRadius: 8,
         alignSelf: 'flex-end',
         marginHorizontal: 10,
@@ -69,9 +69,6 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     flatContainer: {
-        padding: 5,
-        justifyContent: 'center',
-        flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-        flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
+        padding: 10,
     },
 });
