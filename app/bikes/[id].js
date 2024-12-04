@@ -7,7 +7,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { API_URL } from "@env";
 import { MaterialIcons } from '@expo/vector-icons';
 import { showAlert } from "../misc/util";
-import { fetchBike, fetchStation } from "../misc/api";
+import { fetchBike, fetchRentals, fetchStation } from "../misc/api";
 
 const BikeDetails = () => {
     const router = useRouter();
@@ -23,12 +23,28 @@ const BikeDetails = () => {
                 setBike(bike);
                 const station = await fetchStation(bike?.station);
                 setStation(station);
+                const rentals = await fetchRentals();
+                const rentalsByBike = rentals.filter(rental => rental.bike == id)
+                setRentals(rentalsByBike)
             } catch (error) {
                 console.error(error);
             }
         };
         fetchData();
     }, [id]);
+
+    const releaseBike = async (id) => {
+        const updateBikeStatus = await fetch(`${API_URL}/bikes/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                status: 'available',
+            })
+        });
+        console.log(updateBikeStatus)
+    }
 
     const deleteBike = async (id) => {
         try {
@@ -60,41 +76,48 @@ const BikeDetails = () => {
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation path={'/bikes'} />
-            <View style={styles.headerContainer}>
-                <Text style={globalStyles.title}>Detalles de la bicicleta</Text>
-                <Text style={globalStyles.subtitle}>Aqui podras observar detalles de la bicicleta</Text>
-            </View>
+
             {
                 bike && station ? (
                     <View style={styles.infoContainer}>
+                        <Text style={globalStyles.title}>Detalles de la bicicleta</Text>
+                        <Text style={globalStyles.subtitle}>Aqui podras observar detalles de la bicicleta</Text>
                         <MaterialIcons name="directions-bike" size={24} color="#007bff" />
                         <Text style={globalStyles.infoText}>{bike?.serialNumber}</Text>
                         <MaterialIcons name="location-on" size={24} color="#007bff" />
                         <Text style={globalStyles.infoText}>{station?.name}</Text>
                         <MaterialIcons name="info" size={24} color="#007bff" />
                         <Text style={globalStyles.infoText}>{showStatus(bike?.status)}</Text>
+                        <View style={styles.actionsContainer}>
+                            {
+                                bike?.status === 'unavailable'
+                                &&
+                                <Pressable style={[globalStyles.grayButton, { marginHorizontal: 10 }]}>
+                                    <Text
+                                        style={globalStyles.buttonText}
+                                        onPress={() => releaseBike(id)}
+                                    >
+                                        Liberar bicicleta
+                                    </Text>
+                                </Pressable>
+                            }
+
+                            <Pressable
+                                style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}
+                                onPress={() => deleteBike(id)}
+                            >
+                                <Text style={globalStyles.buttonText}>
+                                    Eliminar
+                                </Text>
+                            </Pressable>
+                        </View>
                     </View>
                 ) : (
                     <Text style={styles.loadingText}>Cargando...</Text>
                 )
             }
-            <View style={styles.actionsContainer}>
-                <Pressable style={[globalStyles.grayButton, { marginHorizontal: 10 }]}>
-                    <Text style={globalStyles.buttonText}>
-                        Editar
-                    </Text>
-                </Pressable>
-                <Pressable
-                    style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}
-                    onPress={() => deleteBike(id)}
-                >
-                    <Text style={globalStyles.buttonText}>
-                        Eliminar
-                    </Text>
-                </Pressable>
-            </View>
 
-            <View style={styles.rentalsContainer}>
+            <View style={styles.infoContainer}>
                 <View>
                     <Text style={globalStyles.title}>Historial de rentas</Text>
                     <Text style={globalStyles.subtitle}>Consulta los viajes realizados con esta bicicleta.</Text>
@@ -102,7 +125,21 @@ const BikeDetails = () => {
                 {
                     rentals.length > 0
                         ?
-                        < FlatList />
+                        < FlatList
+                            data={rentals}
+                            keyExtractor={(rental) => rental._id}
+                            renderItem={({ item }) => (
+                                <View style={styles.rentalItem}>
+                                    <MaterialIcons style={{ marginHorizontal: 10 }} name="date-range" size={24} color="#007bff" />
+                                    <Text style={globalStyles.infoText}>
+                                        {new Date(item.rentalStartTime).toLocaleDateString()}
+                                    </Text>
+                                    <Pressable style={styles.rentalButton} >
+                                        <Text style={globalStyles.buttonText}>Ver detalles</Text>
+                                    </Pressable>
+                                </View>
+                            )}
+                        />
                         :
                         <Text style={globalStyles.subtitle}>No hay viajes registrados</Text>
                 }
@@ -112,10 +149,6 @@ const BikeDetails = () => {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
-        alignItems: 'center',
-        marginBottom: 10
-    },
     infoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -134,11 +167,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 20
+        marginVertical: 20
     },
     rentalsContainer: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    rentalItem: {
+        marginVertical: 10,
+        padding: 10,
+        borderRadius: 10,
+        flexDirection: 'row',
+        backgroundColor: '#f0f0f0',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    rentalButton: {
+        marginLeft: 20,
+        padding: 10,
+        backgroundColor: 'gray',
+        borderRadius: 10,
     },
     loadingText: {
         textAlign: 'center',
