@@ -6,6 +6,7 @@ import { API_URL } from '@env';
 import { fetchAndSetUsers, fetchAndSetStations, fetchAndSetBikes } from '../misc/api';
 import { FindBar } from '../components/FindBar';
 import { showAlert } from '../misc/util';
+import { router } from 'expo-router';
 
 export default function CreateAppointmentToday() {
     const [stations, setStations] = useState([]);
@@ -29,7 +30,7 @@ export default function CreateAppointmentToday() {
             return;
         }
         try {
-            const response = await fetch(`${API_URL}/rentals`, {
+            const saveRental = await fetch(`${API_URL}/rentals`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -41,9 +42,22 @@ export default function CreateAppointmentToday() {
                     rentalStartTime: new Date(),
                 })
             });
-            const data = await response.json();
-            clearSelections();
-            showAlert('Éxito', 'Cita reservada exitosamente.'); 
+            const saveRentalData = await saveRental.json();
+            const updateBikeStatus = await fetch(`${API_URL}/bikes/${bikeSelected}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: 'unavailable',
+                })
+            });
+            const bikeUpdated = await updateBikeStatus.json()
+            if (bikeUpdated.status === 'unavailable') {
+                clearSelections();
+                showAlert('Éxito', 'Cita reservada exitosamente.');
+                router.push('/appointments/' + saveRentalData._id);
+            }
         }
         catch (error) {
             showAlert('Error', 'Ocurrió un error al reservar la cita.');
