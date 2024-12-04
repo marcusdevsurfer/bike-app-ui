@@ -20,6 +20,16 @@ export const fetchRental = async (id) => {
     }
 };
 
+export const fetchRentals = async () => {
+    try {
+        const response = await fetch(`${API_URL}/rentals/`);
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export const fetchBike = async (id) => {
     try {
         const response = await fetch(`${API_URL}/bikes/${id}`);
