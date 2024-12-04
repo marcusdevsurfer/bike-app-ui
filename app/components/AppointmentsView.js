@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Platform } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { HeaderNavigation } from "./HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { Link } from "expo-router";
-import PropTypes from 'prop-types';
 import { fetchRentals } from "../misc/api";
-
-const AppointmentItem = ({ appointment }) => {
-    return (
-        <View style={styles.itemContainer}>
-            <View style={styles.itemHeader}>
-                <MaterialIcons name="directions-bike" size={24} color="#007bff" />
-                <Text style={styles.itemTitle}>Serial:</Text>
-            </View>
-            <Text style={styles.itemText}><MaterialIcons name="event" size={16} color="#007bff" /> Fecha: {new Date(appointment?.rentalStartTime).toLocaleDateString()} </Text>
-            <Text style={styles.itemText}><MaterialIcons name="schedule" size={16} color="#007bff" /> Hora: {new Date(appointment?.rentalStartTime).toLocaleTimeString()}</Text>
-            <Text style={styles.itemText}><MaterialIcons name="location-on" size={16} color="#007bff" /> Estación: {appointment?.stationStart}</Text>
-        </View>
-    )
-};
+import { RentalItem } from "./RentalItem";
 
 export default function AppointmentsView() {
     const [rentals, setRentals] = useState([]);
@@ -50,8 +35,8 @@ export default function AppointmentsView() {
                                 data={rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString())}
                                 keyExtractor={item => item._id}
                                 renderItem={({ item }) =>
-                                    <Link href={`/appointments/${item._id}`}>
-                                        <AppointmentItem appointment={item} />
+                                    <Link style={{margin: 0, padding: 0}} href={`/appointments/${item._id}`}>
+                                        <RentalItem rental={item} />
                                     </Link>}
                                 contentContainerStyle={styles.listContent}
                             />
@@ -84,27 +69,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    itemHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    itemTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginLeft: 10,
-    },
-    itemText: {
-        fontSize: 16,
-        marginVertical: 2,
-    },
 });
-
-
-AppointmentItem.propTypes = {
-    appointment: PropTypes.shape({
-        rentalStartTime: PropTypes.string.isRequired,
-        stationStart: PropTypes.string.isRequired,
-        _id: PropTypes.string.isRequired,
-    }).isRequired,
-};
