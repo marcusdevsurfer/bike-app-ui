@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator, Platform } from "r
 import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderNavigation } from "./HeaderNavigation";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
-import { API_URL } from '@env';
 import { Link } from "expo-router";
+import PropTypes from 'prop-types';
+import { fetchRentals } from "../misc/api";
 
 const AppointmentItem = ({ appointment }) => {
     return (
@@ -27,18 +28,13 @@ export default function AppointmentsView() {
     const [today, setToday] = useState(new Date());
 
     useEffect(() => {
-        fetchRentals();
-    }, []);
-
-    const fetchRentals = async () => {
-        try {
-            const response = await fetch(`${API_URL}/rentals`);
-            const data = await response.json();
-            setRentals(data);
+        const fetchData = async () => {
+            const rentals = await fetchRentals();
+            setRentals(rentals);
             setLoading(false);
-        } catch (error) { console.log(error); }
-
-    }
+        }
+        fetchData()
+    }, []);
 
     return (
         <View style={[globalStyles.container, getInsets()]}>
@@ -73,6 +69,7 @@ const styles = StyleSheet.create({
         color: '#007bff',
     },
     sectionContainer: {
+        justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
     },
@@ -90,6 +87,7 @@ const styles = StyleSheet.create({
     listContent: {
         padding: 5,
         justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     },
@@ -108,3 +106,12 @@ const styles = StyleSheet.create({
         marginVertical: 2,
     },
 });
+
+
+AppointmentItem.propTypes = {
+    appointment: PropTypes.shape({
+        rentalStartTime: PropTypes.string.isRequired,
+        stationStart: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired,
+    }).isRequired,
+};
