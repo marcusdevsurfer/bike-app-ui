@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { useRouter } from 'expo-router';
@@ -14,6 +14,7 @@ const BikeDetails = () => {
     const { id } = useLocalSearchParams();
     const [bike, setBike] = useState(null);
     const [station, setStation] = useState(null);
+    const [rentals, setRentals] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,7 +93,21 @@ const BikeDetails = () => {
                     </Text>
                 </Pressable>
             </View>
-        </View>
+
+            <View style={styles.rentalsContainer}>
+                <View>
+                    <Text style={globalStyles.title}>Historial de rentas</Text>
+                    <Text style={globalStyles.subtitle}>Consulta los viajes realizados con esta bicicleta.</Text>
+                </View>
+                {
+                    rentals.length > 0
+                        ?
+                        < FlatList />
+                        :
+                        <Text style={globalStyles.subtitle}>No hay viajes registrados</Text>
+                }
+            </View>
+        </View >
     );
 }
 
@@ -119,6 +134,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: 20
+    },
+    rentalsContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     loadingText: {
         textAlign: 'center',
