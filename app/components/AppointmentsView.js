@@ -19,8 +19,7 @@ const AppointmentItem = ({ appointment }) => {
             <Text style={styles.itemText}><MaterialIcons name="location-on" size={16} color="#007bff" /> Estación: {appointment?.stationStart}</Text>
         </View>
     )
-}
-    ;
+};
 
 export default function AppointmentsView() {
     const [rentals, setRentals] = useState([]);
@@ -43,31 +42,28 @@ export default function AppointmentsView() {
                 <Text style={globalStyles.title}>Citas Registradas</Text>
                 <Text style={globalStyles.subtitle}>Estas son las citas registradas para el dia de hoy.</Text>
             </View>
-            {
-                loading ? <ActivityIndicator size="large" color="#007bff" /> :
-                    rentals.length > 0 ? (
-                        <FlatList
-                            data={rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString())}
-                            keyExtractor={item => item._id}
-                            renderItem={({ item }) =>
-                                <Link href={`/appointments/${item._id}`} style={{ textDecoration: 'none' }}>
-                                    <AppointmentItem appointment={item} />
-                                </Link>}
-                            contentContainerStyle={styles.listContent}
-                        />
-                    ) : (
-                        <Text style={globalStyles.subtitle}>No hay citas para hoy.</Text>
-                    )}
+            <View style={styles.rentalsContainer}>
+                {
+                    loading ? <ActivityIndicator size="large" color="#007bff" /> :
+                        rentals.length > 0 ? (
+                            <FlatList
+                                data={rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString())}
+                                keyExtractor={item => item._id}
+                                renderItem={({ item }) =>
+                                    <Link href={`/appointments/${item._id}`}>
+                                        <AppointmentItem appointment={item} />
+                                    </Link>}
+                                contentContainerStyle={styles.listContent}
+                            />
+                        ) : (
+                            <Text style={globalStyles.subtitle}>No hay citas para hoy.</Text>
+                        )}
+            </View>
         </View>
     );
 }
 
-
 const styles = StyleSheet.create({
-    bikeCount: {
-        fontSize: 18,
-        color: '#007bff',
-    },
     sectionContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -75,7 +71,7 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         padding: 20,
-        margin: 10,
+        marginVertical: 10, 
         backgroundColor: '#fff',
         borderRadius: 10,
         shadowColor: '#000',
@@ -85,11 +81,8 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     listContent: {
-        padding: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-        flexWrap: Platform.OS === 'web' ? 'wrap' : 'nowrap',
     },
     itemHeader: {
         flexDirection: 'row',
