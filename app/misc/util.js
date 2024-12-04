@@ -13,7 +13,7 @@ export const showStatus = (status) => {
     switch (status) {
         case 'available':
             return 'Disponible';
-        case 'in-use':
+        case 'unavailable':
             return 'En uso';
         case 'maintenance':
             return 'En mantenimiento';
