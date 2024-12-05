@@ -54,17 +54,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
-    itemContainer: {
-        padding: 20,
-        marginVertical: 10, 
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
     listContent: {
         justifyContent: 'center',
         alignItems: 'center',
