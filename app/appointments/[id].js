@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable , Platform, Alert} from "react-native";
 import { globalStyles, getInsets } from "../../styles/globalStyles";
 import { HeaderNavigation } from "../components/HeaderNavigation";
 import { useRouter } from 'expo-router';
@@ -18,31 +18,65 @@ const AppointmentDetails = () => {
     const [station, setStation] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const rental = await fetchRental(id);
-                setAppointment(rental);
-                const user = await fetchUser(rental?.user);
-                setUser(user);
-                const bike = await fetchBike(rental?.bike);
-                setBike(bike);
-                const station = await fetchStation(rental?.stationStart);
-                setStation(station);
-            } catch (error) {
-                console.error(error);
-            }
-        };
         fetchData();
     }, [id]);
 
+    const fetchData = async () => {
+        try {
+            const rental = await fetchRental(id);
+            setAppointment(rental);
+            const user = await fetchUser(rental?.user);
+            setUser(user);
+            const bike = await fetchBike(rental?.bike);
+            setBike(bike);
+            const station = await fetchStation(rental?.stationStart);
+            setStation(station);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const confirmDelete = () => {
+        if (Platform.OS === 'web') {
+            if (window.confirm('¿Estás seguro de que deseas cancelar esta cita?')) {
+                deleteRental(id);
+            }
+        } else {
+            Alert.alert(
+                'Confirmación',
+                '¿Estás seguro de que deseas cancelar esta cita?',
+                [
+                    { text: 'Cancelar', style: 'cancel' },
+                    { text: 'Aceptar', onPress: () => deleteRental(id) },
+                ],
+                { cancelable: false }
+            );
+        }
+    };
+
+
+
     const deleteRental = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/rentals/${id}`, {
-                method: 'DELETE',
+            const bikeUpdated = await fetch(`${API_URL}/bikes/${appointment?.bike}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: 'available',
+                }),
             });
-            const json = await response.json();
-            showAlert('Cita cancelada', 'La cita ha sido cancelada correctamente.');
-            router.replace('/appointments');
+
+            if (bikeUpdated.ok) {
+                const rentalDeleted = await fetch(`${API_URL}/rentals/${id}`, {
+                    method: 'DELETE',
+                });
+                if (rentalDeleted.ok) {
+                    showAlert('Cita cancelada', 'La cita ha sido cancelada con éxito.');
+                    router.push('/appointments');
+                }
+            }
         } catch (error) {
             console.error(error);
         }
@@ -72,14 +106,9 @@ const AppointmentDetails = () => {
                 )
             }
             <View style={styles.actionsContainer}>
-                <Pressable style={[globalStyles.grayButton, { marginHorizontal: 10 }]}>
-                    <Text style={globalStyles.buttonText}>
-                        Editar cita
-                    </Text>
-                </Pressable>
                 <Pressable
-                    style={[globalStyles.strongBlueButton, { marginHorizontal: 10 }]}
-                    onPress={() => deleteRental(id)}
+                    style={[globalStyles.redButton]}
+                    onPress={confirmDelete}
                 >
                     <Text style={globalStyles.buttonText}>
                         Cancelar cita
