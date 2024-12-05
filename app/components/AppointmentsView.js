@@ -9,7 +9,7 @@ import { RentalItem } from "./RentalItem";
 export default function AppointmentsView() {
     const [rentals, setRentals] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [today, setToday] = useState(new Date());
+    const [today] = useState(new Date());
 
     useEffect(() => {
         const fetchData = async () => {
