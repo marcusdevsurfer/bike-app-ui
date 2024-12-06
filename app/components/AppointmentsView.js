@@ -12,14 +12,16 @@ export default function AppointmentsView() {
     const [today] = useState(new Date());
 
     useEffect(() => {
-        const fetchData = async () => {
-            const rentals = await fetchRentals();
-            setRentals(rentals);
-            setLoading(false);
-        }
         fetchData()
     }, []);
 
+    const fetchData = async () => {
+        const rentals = await fetchRentals();
+        const rentalsByToday = rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString());
+        setRentals(rentalsByToday);
+        setLoading(false);
+    }
+    
     return (
         <View style={[globalStyles.container, getInsets()]}>
             <HeaderNavigation />
@@ -32,16 +34,16 @@ export default function AppointmentsView() {
                     loading ? <ActivityIndicator size="large" color="#007bff" /> :
                         rentals.length > 0 ? (
                             <FlatList
-                                data={rentals.filter(rental => new Date(rental.rentalStartTime).toLocaleDateString() === today.toLocaleDateString())}
+                                data={rentals}
                                 keyExtractor={item => item._id}
                                 renderItem={({ item }) =>
-                                    <Link style={{margin: 0, padding: 0}} href={`/appointments/${item._id}`}>
+                                    <Link style={{ margin: 0, padding: 0 }} href={`/appointments/${item._id}`}>
                                         <RentalItem rental={item} />
                                     </Link>}
                                 contentContainerStyle={styles.listContent}
                             />
                         ) : (
-                            <Text style={globalStyles.subtitle}>No hay citas para hoy.</Text>
+                            <Text style={styles.message}>No hay citas para hoy.</Text>
                         )}
             </View>
         </View>
@@ -58,4 +60,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    message: {
+        fontSize: 16,
+        color: '#333',
+        textAlign: 'center',
+        marginVertical: 10,
+    }
 });
